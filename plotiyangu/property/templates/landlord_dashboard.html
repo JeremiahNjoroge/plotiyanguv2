@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="content">
+        <style>
+            .content {
+                background-image: url("{% static 'images/apartment.jpg' %}");
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                height: 100vh;
+                transition: margin-left 0.3s ease;
+                width: 100%;
+                /* Set text color, size, and weight */
+                color: black;
+                /* Set opacity of the background image */
+            }
+
+            .content h1 {
+                /* Make h1 text big, bold, and centered */
+                font-size: 3rem;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .content p {
+                /* Make paragraph text big, bold, and centered */
+                font-size: 1.5rem;
+                font-weight: bold;
+                text-align: center;
+            }
+        </style>
+        <h1>Welcome, Landlord!</h1>
+        <p>This is your dashboard. <br>You can manage your properties, tenants, contracts, payments, and settings from here.</p>
+    </div>
+{% endblock %}

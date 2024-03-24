@@ -1,0 +1,408 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3e5ab; /* Cream background */
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px; /* Adjust as needed */
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+.login-form {
+    width: 300px;
+    padding: 20px;
+    background-color: #634b34; /* Brown background */
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    color: #fff; /* White text color */
+    margin: auto; /* Center the form horizontally */
+    margin-top: 20vh; /* Adjust vertical margin to center the form vertically */
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #fff;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.login-form input[type="submit"] {
+    background-color: #4CAF50; /* Green login button */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.login-form input[type="submit"]:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+.error-message {
+    color: #FF0000;
+    margin-top: 10px;
+    text-align: center;
+}
+
+
+/* Header Styles */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px 20px;
+    z-index: 1000; /* Ensure the header appears above other elements */
+}
+
+/* Left section styles */
+.left-section {
+    display: flex;
+    align-items: center;
+}
+
+/* Chat button styles */
+.chat-btn, .notification-btn {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Right section styles */
+.right-section {
+    display: flex;
+    align-items: center;
+}
+
+/* Dropdown Styles */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #555;
+}
+
+/* Form Styles */
+.form-container {
+    width: 100%;
+    max-width: 600px; /* Adjust maximum width */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #8b5a2b; /* Brown sidebar */
+    padding-top: 60px; /* Adjust based on the height of the header */
+}
+
+/* Define styles for the collapsed sidebar */
+.sidebar.collapsed {
+    width: 50px; /* Adjust as needed */
+}
+
+.content.collapsed {
+    margin-left: 50px; /* Adjust based on the width of the collapsed sidebar */
+}
+
+/* Adjust other styles to accommodate the collapsed sidebar */
+.content {
+    margin-left: 50px; /* Adjust based on the width of the collapsed sidebar */
+}
+
+
+.sidebar h2 {
+    color: #f3e5ab; /* Cream text */
+    text-align: center;
+    margin-bottom: 30px; /* Add some spacing below the title */
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    padding: 10px 20px;
+    border-bottom: 1px solid #634b34; /* Darker brown border */
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.sidebar ul li:last-child {
+    border-bottom: none; /* Remove border from the last item */
+}
+
+.sidebar ul li a {
+    color: #f3e5ab; /* Cream text */
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar ul li.active a {
+    background-color: black; /* Green background for active item */
+    color: white; /* White text for active item */
+}
+
+.sidebar ul li a:hover {
+    background-color: #634b34; /* Darker brown on hover */
+}
+.sidebar .fas {
+    margin-right: 10px; /* Add space between the icon and text */
+    color: black; /* Set icon color */
+}
+
+/* Icon for the toggle button */
+.toggle-sidebar-btn {
+    top: 10px;
+    left: 10px;
+    color: #f3e5ab; /* Cream text */
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 999; /* Ensure the button is above other content */
+}
+
+/* Styling for the sidebar toggle icon */
+.toggle-sidebar-btn .fas {
+    font-size: 24px;
+    transition: transform 0.3s;
+}
+
+/* Rotate the icon when sidebar is collapsed */
+.sidebar.collapsed .toggle-sidebar-btn .fas {
+    transform: rotate(-90deg);
+}
+
+.sidebar .logout {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: #f3e5ab; /* Cream text */
+}
+
+.sidebar .logout:hover {
+    color: #ff4d4d; /* Red on hover */
+}
+
+.chat-card {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Content Styles */
+.content {
+    margin-top: 60px;
+    margin-left: 250px; /* Adjust based on sidebar width */
+    padding: 20px;
+    padding-bottom: 120px; /* Adjusted padding-bottom value */
+    display: flex;
+    flex-direction: column; /* Ensure content stacks vertically */
+    min-height: calc(100vh - 60px); /* Adjusted min-height to consider the top margin */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    overflow-y: auto; /* Enable vertical scrolling if content exceeds viewport height */
+    text-align: left; /* Align content to the left */
+}
+
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Button Styles */
+.button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+/* Form Styles */
+.form-container {
+    width: 90%; /* Adjust width as needed */
+    margin: auto;
+    padding: 20px;
+    background-color: #fff; /* White background */
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-container input[type="text"],
+.form-container input[type="email"],
+.form-container input[type="tel"],
+.form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px; /* Increased spacing between fields */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-container button[type="submit"],
+.form-container button[type="button"] {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px; /* Adjust spacing between buttons */
+}
+
+.form-container button[type="submit"] {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.form-container button[type="submit"]:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+.form-container button[type="button"] {
+    background-color: #f44336; /* Red */
+    color: white;
+}
+
+.form-container button[type="button"]:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+
+/* Header Styles */
+.header {
+    background-color: #222; /* Dark background color */
+    color: #fff; /* White text color */
+    padding: 10px;
+    text-align: right;
+}
+
+.user-info p {
+    display: inline;
+    margin-right: 20px;
+}
+
+.user-info a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.user-info a:hover {
+    text-decoration: underline;
+}
+/* Footer Styles */
+footer {
+    background-color: #333; /* Brown background */
+    color: #fff; /* White text */
+    padding: 20px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

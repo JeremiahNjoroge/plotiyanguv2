@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Add any CSS or JavaScript links -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head>
+<body>
+    <header>
+        <!-- Left section -->
+        <div class="left-section">
+            <!-- Chat button -->
+            <a href="{% url 'chat' %}"><button class="chat-btn">Chat</button></a>
+        <!-- Notification button with count -->
+        <a href="{% url 'landlord_notifications' %}">
+            <button class="notification-btn">
+                Notifications {% if notification_count > 0 %}({{ notification_count }}){% endif %}
+            </button>
+        </a>
+        </div>
+        <!-- Right section -->
+        <div class="right-section">
+            <!-- Logged in user and dropdown for logout -->
+            <div class="dropdown">
+                <button class="dropbtn">Welcome, {{ user.username }}</button>
+                <div class="dropdown-content">
+                    <a href="{% url 'profile_edit' %}">Profile</a>
+                    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="sidebar">
+        <!-- Add a button to toggle the sidebar -->
+        <button class="toggle-sidebar-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i> <!-- Icon for the button -->
+        </button>
+        <h2>Landlord</h2>
+        <ul>
+            <li><a href="{% url 'landlord_dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="{% url 'property_list' %}"><i class="fas fa-building"></i> Properties</a></li>
+            <li><a href="{% url 'tenant_list' %}"><i class="fas fa-users"></i> Tenants</a></li>
+            <li><a href="{% url 'contract_list' %}"><i class="fas fa-file-contract"></i> Contracts</a></li>
+            <li><a href="{% url 'payment_list' %}"><i class="fas fa-money-check-alt"></i> Payments</a></li>
+            <li><a href="{% url 'unit_list' %}"><i class="fas fa-bed""></i> Units</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    <footer>
+        <!-- Your footer content goes here -->
+        <p>&copy; 2024 PlotiYangu Rental Management System. All rights reserved.</p>
+    </footer>
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>

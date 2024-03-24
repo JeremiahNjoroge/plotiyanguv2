@@ -1,0 +1,90 @@
+{% extends 'tenant_base.html' %}
+{% block title %}
+    Tenant Dashboard
+{% endblock %}
+
+{% csrf_token %}
+{% block content %}
+<div class="container">
+    <h1>Welcome, {{ tenant.username }}!</h1>
+
+    {% if profile_edited %}
+    <div class="alert alert-success" role="alert">
+        Profile Edited Successfully
+    </div>
+    {% endif %}
+    
+    <!-- Display tenant information -->
+    <div class="card">
+        <div class="card-header">
+            Personal Information
+        </div>
+        <div class="card-body">
+            <p><strong>First Name:</strong> {{ tenant.first_name }}</p>
+            <p><strong>Last Name:</strong> {{ tenant.last_name }}</p>
+            <p><strong>Email:</strong> {{ tenant.email }}</p>
+            <p><strong>Phone:</strong> {{ tenant.phone }}</p>
+            <p><strong>Description:</strong> {{ tenant.description }}</p>
+        </div>
+    </div>
+    
+<!-- Display rented property information -->
+<div class="card mt-4">
+    <div class="card-header">
+        Rented Property
+    </div>
+    <div class="card-body">
+        <!-- Check if the tenant has a contract -->
+        {% if contracts %}
+            <!-- Access the first contract (assuming one tenant has only one contract at a time) -->
+            {% with contract=contracts.0 %}
+                <!-- Display unit details -->
+                <p><strong>Unit:</strong> {{ contract.unit_id }}</p>
+                <!-- Access the property through the unit -->
+                {% with property=contract.unit_id.property_name %}
+                    <!-- Display property details -->
+                    <p><strong>Property Name:</strong> {{ property.property_name }}</p>
+                    <p><strong>Location:</strong> {{ property.location }}</p>
+                    <!-- Add more property details as needed -->
+                {% endwith %}
+            {% endwith %}
+        {% else %}
+            <p>No rented property found.</p>
+        {% endif %}
+    </div>
+</div>
+    
+    <!-- Display contracts -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Contracts
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for contract in contracts %}
+            <li class="list-group-item">
+                <strong>Contract ID:</strong> {{ contract.contract_id }}<br>
+                <strong>Period:</strong> {{ contract.start_date }} to {{ contract.end_date }}<br>
+                <strong>Monthly Rent:</strong> {{ contract.unit_id.rent_amount }}<br>
+                <!-- Add more contract details as needed -->
+            </li>
+            {% empty %}
+            <li class="list-group-item">No contracts found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <!-- Display payment history -->
+    <div class="card mt-4">
+        <div class="card-header">
+            Payment History
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for payment in payments %}
+            <li class="list-group-item">{{ payment.amount }} paid on {{ payment.date }}</li>
+            {% empty %}
+            <li class="list-group-item">No payment history found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

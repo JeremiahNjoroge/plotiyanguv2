@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <style>
+        #showPassword {
+            margin-top: 10px; /* Adjust spacing as needed */
+        }
+
+        #showPasswordLabel {
+            font-size: 14px;
+            color: #333;
+        }
+
+        #forgotPasswordText {
+            font-size: 14px;
+            color: #777;
+        }        
+    </style>
+    <script>
+        function togglePassword() {
+            var passwordInput = document.getElementById("password");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="login-form">
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if error_message %}
+                <p class="error-message">{{ error_message }}</p>
+            {% endif %}
+            <label for="username">Username/Email:</label><br>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br>
+            <input type="checkbox" id="showPassword" onclick="togglePassword()">
+            <label for="showPassword">Show Password</label><br>
+            <input type="submit" value="Login">
+        </form>
+        <p>If you forgot your password, please contact the landlord.</p>
+    </div>
+</body>
+</html>

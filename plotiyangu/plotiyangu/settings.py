@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +32,12 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "crispy_forms",
+    'crispy_bootstrap4',
+    'django_tables2',
     'property',
+    'admin_interface',
+    'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -59,6 +65,8 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'property.context_processors.tenant_notification_count',
+                'property.context_processors.notification_count',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -75,16 +83,17 @@ WSGI_APPLICATION = 'plotiyangu.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "mssql",
-        "NAME": "plotiyangu",
-        "USER": "sa",
-        "PASSWORD": "admin.1234",
-        "HOST": "GRIT\SQLEXPRESS",
-        "PORT": "1433",
-        "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'plotiyangu',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',  # or the hostname where your MySQL server is running
+        'PORT': '3306',      # or the port on which your MySQL server is listening
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
-    },
+    }
 }
 
 
@@ -122,9 +131,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'property.CustomUser'
+
+# Crispy Forms settings
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+WKHTMLTOPDF_PATH = '/wkhtmltopdf.exe'

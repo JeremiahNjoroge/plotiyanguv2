@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Property List
+{% endblock %}
+
+{% block content %}
+    <h1>Properties List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Property ID</th>
+                <th>Property Name</th>
+                <th>Location</th>
+                <!-- Add more columns if needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for property in properties %}
+                <tr>
+                    <td>{{ property.property_id }}</td>
+                    <td>{{ property.property_name }}</td>
+                    <td>{{ property.location }}</td>
+                    <!-- Display other property information -->
+                    <td><a href="{% url 'property_detail' property.property_id %}">View Details</a></td>  <!-- Link to property detail page -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

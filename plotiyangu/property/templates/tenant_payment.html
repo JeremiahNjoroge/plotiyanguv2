@@ -1,0 +1,36 @@
+{% extends 'tenant_base.html' %}
+{% block title %}
+    Payment Details
+{% endblock %}
+
+{% block content %}
+    <h1>Payment Details</h1>
+    <a href="{% url 'generate_payment_statement' contract_id=contract.contract_id %}">
+        <button id="generateStatementBtn" class="btn btn-primary">Generate Payment Statement</button>
+    </a>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="contract_id" value="{{ contract.contract_id }}">
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="text" class="form-control" id="amount" name="amount">
+        </div>
+        <div class="form-group">
+            <label for="date">Date:</label>
+            <input type="date" class="form-control" id="date" name="date">
+        </div>
+        <div class="form-group">
+            <label for="payment_method">Payment Method:</label>
+            <select class="form-control" id="payment_method" name="payment_method">
+                <option value="mpesa">Mpesa</option>
+                <option value="bank">Bank Transfer</option>
+                <option value="cash">Cash</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="payment_reference_no">Payment Reference No:</label>
+            <input type="text" class="form-control" id="payment_reference_no" name="payment_reference_no">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}

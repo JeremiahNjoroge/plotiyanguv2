@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Add any CSS or JavaScript links -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head>
+    <!-- Add this script tag in your HTML file to include jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
+<body>
+    <header>
+        <!-- Left section -->
+        <div class="left-section">
+            <!-- Chat button -->
+            <button class="chat-btn">Chat</button>
+            <!-- Notification button -->
+
+            <a href="{% url 'tenant_notifications' %}">
+                <button class="notification-btn">
+                Notifications {% if tenant_notification_count > 0 %}({{ tenant_notification_count }}){% endif %}
+                </button>
+        </a>
+        </div>
+        <!-- Right section -->
+        <div class="right-section">
+            <!-- Logged in user and dropdown for logout -->
+            <div class="dropdown">
+                <button class="dropbtn">Welcome, {{ user.username }}</button>
+                <div class="dropdown-content">
+                    <a href="{% url 'profile_edit' %}">Profile</a>
+                    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="sidebar">
+        <!-- Add a button to toggle the sidebar -->
+        <button class="toggle-sidebar-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i> <!-- Icon for the button -->
+        </button>
+        <h2>Tenant</h2>
+        <ul>
+            <li><a href="{% url 'tenant_dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="{% url 'profile_edit' %}"><i class="fas fa-user"></i> Profile</a></li>
+            {% for contract in contracts %}
+            <li><a href="{% url 'tenant_contract' contract_id=contract.contract_id %}"><i class="fas fa-file-contract"></i> Contract {{ contract.contract_id }}</a></li>
+            {% endfor %}
+            {% for contract in contracts %}
+            <li><a href="{% url 'tenant_payment' contract_id=contract.contract_id %}"><i class="fas fa-money-check-alt"></i> Make Rent Payment</a></li>
+            {% endfor %}
+            {% for contract in contracts %}
+            <li><a href="{% url 'generate_payment_statement' contract_id=contract.contract_id %}"><i class="fas fa-file-invoice-dollar"></i>Payment Statement</a></li>
+            {% endfor %}
+            <li><a href="{% url 'request_maintenance' %}"><i class="fas fa-tools"></i>Request Maintenance</a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        {% csrf_token %}
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    <footer>
+        <!-- Your footer content goes here -->
+        <p>&copy; 2024 PlotiYangu Rental Management System. All rights reserved.</p>
+    </footer>
+    <script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>
