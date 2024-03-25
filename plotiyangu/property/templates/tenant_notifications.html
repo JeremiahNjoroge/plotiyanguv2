@@ -1,0 +1,24 @@
+{% extends 'tenant_base.html' %}
+
+{% block title %}
+    Tenant Notifications
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Tenant Notifications</h1>
+        <div class="alert alert-danger" role="alert">
+            {% if tenant_notifications_data %}
+                {% for notification in tenant_notifications_data %}
+                    {% if notification.type == 'message' %}
+                        <strong>From: Landlord</strong><br>
+                        {{ notification.message }}
+                        <hr>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                No notifications available.
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

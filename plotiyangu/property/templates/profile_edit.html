@@ -1,0 +1,24 @@
+{% extends 'tenant_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Tenant Profile
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-4">Edit Profile</h1>
+
+        <!-- Display password change form -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ password_form|crispy }}
+
+                    <button type="submit" class="btn btn-primary mt-3">Change Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

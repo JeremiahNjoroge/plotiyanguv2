@@ -1,0 +1,40 @@
+{% extends 'tenant_base.html' %}
+{% block title %}
+    Contract Details
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Contract Details</h1>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <p><strong>Contract ID:</strong> {{ contract.contract_id }}</p>
+                <p><strong>Start Date:</strong> {{ contract.start_date }}</p>
+                <p><strong>End Date:</strong> {{ contract.end_date }}</p>
+            </div>
+            <div class="col-md-6">
+                <!-- Form for contract renewal request -->
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="renewal">
+                    <div class="form-group">
+                        <label for="renewal_reason">Reason for Renewal:</label>
+                        <textarea class="form-control" id="renewal_reason" name="renewal_reason" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Request Renewal</button>
+                </form>
+                
+                <!-- Form for contract termination request -->
+                <form method="post" class="mt-3">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="termination">
+                    <div class="form-group">
+                        <label for="termination_reason">Reason for Termination:</label>
+                        <textarea class="form-control" id="termination_reason" name="termination_reason" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Request Termination</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

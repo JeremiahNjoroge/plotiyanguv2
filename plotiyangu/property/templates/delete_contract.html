@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Delete Contract
+{% endblock %}
+
+{% block content %}
+    <h1>Delete Contract</h1>
+    <p>Are you sure you want to delete '{{ contract.contract_id }}'?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+        <!-- Cancel button redirects back to property detail page -->
+        <a href="{% url 'contract_list' %}">Cancel</a>
+    </form>
+{% endblock %}

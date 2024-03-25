@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Add Contract
+{% endblock %}
+
+{% block content %}
+    <h1> Add Contract</h1>
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% if form.errors %}
+                <div class="error-message">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <button type="submit">Save Changes</button>
+        </form>
+        <!-- Display "Property Edited" message if edited parameter is True -->
+        {% if edited %}
+        <div style="background-color: #5cb85c; color: #fff; padding: 10px; border-radius: 4px;">
+            Contract Edited
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

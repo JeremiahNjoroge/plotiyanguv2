@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Tenant Detail: {{ tenant.username }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Tenant Detail: {{ tenant.username }}</h1>
+    
+    <div class="row">
+        <!-- Personal Information Card -->
+        <div class="col-md-4">
+            <div class="card mt-4">
+                <div class="card-header">
+                    Personal Information
+                </div>
+                <div class="card-body">
+                    <p><strong>First Name:</strong> {{ tenant.first_name }}</p>
+                    <p><strong>Last Name:</strong> {{ tenant.last_name }}</p>
+                    <p><strong>Email:</strong> {{ tenant.email }}</p>
+                    <p><strong>Phone:</strong> {{ tenant.phone }}</p>
+                    <p><strong>Description:</strong> {{ tenant.description }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contracts Card -->
+        <div class="col-md-4">
+            <div class="card mt-4">
+                <div class="card-header">
+                    Contracts
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for contract in contracts %}
+                    <li class="list-group-item">
+                        <strong>Contract ID:</strong> {{ contract.contract_id }}<br>
+                        <strong>Period:</strong> {{ contract.start_date }} to {{ contract.end_date }}<br>
+                        <strong>Unit:</strong> {{ contract.unit_id }}<br>
+                        <strong>Rent:</strong> {{ contract.unit_id.rent_amount }}
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item">No contracts found for this tenant.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Payments Card -->
+        <div class="col-md-4">
+            <div class="card mt-4">
+                <div class="card-header">
+                    Payments
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for payment in payments %}
+                    <li class="list-group-item">{{ payment.amount }} paid on {{ payment.date }} by {{ payment.payment_method }}</li>
+                    {% empty %}
+                    <li class="list-group-item">No payments found for this tenant.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

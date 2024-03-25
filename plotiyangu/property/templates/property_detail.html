@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Property Detail: {{ property.property_name }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>{{ property.property_name }}</h1>
+    <p>Location: {{ property.location }}</p>
+    <!-- Display property description -->
+    <p>Description: {{ property.description }}</p>
+ <!-- Property metrics summary using cards -->
+ <div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <!-- Make Total Units clickable -->
+                    <a href="{% url 'unit_list' %}" class="text-decoration-none text-dark">Total Units</a>
+                </h5>
+                <p class="card-text">{{ total_units }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <!-- Make Total Tenants clickable -->
+                    <a href="{% url 'tenant_list' %}" class="text-decoration-none text-dark">Total Tenants</a>
+                </h5>
+                <p class="card-text">{{ unique_tenants }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Occupied Units</h5>
+                <p class="card-text">{{ occupied_units }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'payment_list' %}" class="text-decoration-none text-dark">Total Payments</a>
+                </h5>
+                <p class="card-text">{{ total_payments }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Display property metrics as charts -->
+    <canvas id="unitChart" width="300" height="150"></canvas>
+
+    <!-- Links to edit or delete property -->
+    <div class="mt-4">
+        <a href="{% url 'edit_property' property.property_id %}" class="btn btn-primary">Edit Property</a>
+        <a href="{% url 'delete_property' property.property_id %}" class="btn btn-danger">Delete Property</a>
+    </div>
+</div>
+
+<script>
+    // Retrieve data from Django template variables
+    var totalUnits = {{ total_units }};
+    var vacantUnits = {{ vacant_units }};
+    var occupiedUnits = {{ occupied_units }};
+    var totalTenants = {{ unique_tenants }}; // Assuming you have a variable for total tenants
+
+    // Create a bar chart using Chart.js
+    var ctx = document.getElementById('unitChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Total Units', 'Vacant Units', 'Occupied Units', 'Total Tenants'],
+            datasets: [{
+                label: 'Property Metrics',
+                data: [totalUnits, vacantUnits, occupiedUnits, totalTenants],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
