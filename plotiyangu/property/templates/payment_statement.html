@@ -1,0 +1,45 @@
+{% extends 'tenant_base.html' %}
+{% block title %}
+    Payment Statement
+{% endblock %}
+
+{% block content %}
+    <h1>Payment Statement</h1>
+    <button id="generatePdfButton">Generate PDF</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Payment ID</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Payment Method</th>
+                <th>Reference No.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+            <tr>
+                <td>{{ payment.payment_id }}</td>
+                <td>{{ payment.amount }}</td>
+                <td>{{ payment.date }}</td>
+                <td>{{ payment.payment_method }}</td>
+                <td>{{ payment.payment_reference_no }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
+    <script>
+        document.getElementById('generatePdfButton').addEventListener('click', function() {
+            // Create a new jsPDF instance
+            const doc = new jsPDF();
+
+            // Add the table to the PDF
+            doc.autoTable({html: 'table'});
+
+            // Save the PDF
+            doc.save('payment_statement.pdf');
+        });
+    </script>
+{% endblock %}

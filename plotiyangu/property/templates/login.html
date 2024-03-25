@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <style>
+        /* Navbar Styles */
+        .navbar {
+            background-color: #333; /* Brown */
+        }
+
+        .navbar-brand {
+            color: #fff !important; /* Cream */
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff !important; /* Cream */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #fff !important; /* White on hover */
+        }
+        #showPassword {
+            margin-top: 5px; /* Adjust spacing as needed */
+        }
+
+        #showPasswordLabel {
+            font-size: 14px;
+            color: #333;
+        }
+
+        #forgotPasswordText {
+            font-size: 14px;
+            color: #777;
+        }        
+    </style>
+</head>
+<body>
+        <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">PlotiYangu</a>
+        </div>
+    </nav>
+
+    <div class="login-form">
+        <h2>PlotiYangu: Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if error_message %}
+                <p class="error-message">{{ error_message }}</p>
+            {% endif %}
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username" required><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br>
+            <input type="checkbox" id="showPassword" onclick="togglePassword()">
+            <label for="showPassword">Show Password</label><br>
+            <input type="submit" value="Login">
+        </form>
+        <p>If you forgot your password, please contact the landlord.</p>
+    </div>
+    <footer>
+        <!-- Your footer content goes here -->
+        <p>&copy; 2024 PlotiYangu Property Management System. All rights reserved.</p>
+    </footer>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

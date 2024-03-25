@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Contract List
+{% endblock %}
+
+{% block content %}
+    <h1>Contract List</h1>
+    <a href="{% url 'add_contract' %}" class="add-button">Add new Contract</a> <!-- Green button -->
+    <table>
+        <thead>
+            <tr>
+                <th>Contract ID</th>
+                <th>Tenant Name</th>
+                <th>Unit ID</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Rent Amount</th>
+                <th>Actions</th> <!-- Added column header for actions -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for contract in contracts %}
+                <tr>
+                    <td>{{ contract.contract_id }}</td>
+                    <td>{{ contract.tenant_name }}</td>
+                    <td>{{ contract.unit_id }}</td>
+                    <td>{{ contract.start_date }}</td>
+                    <td>{{ contract.end_date }}</td>
+                    <td>{{ contract.unit_id.rent_amount }}</td>
+                    <td>
+                        <a href="{% url 'edit_contract' contract.contract_id %}">Edit</a>
+                        <a href="{% url 'delete_contract' contract.contract_id %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

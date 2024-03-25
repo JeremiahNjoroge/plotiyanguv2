@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}
+    Landlord Notifications
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h1>Landlord Notifications</h1>
+        <div class="row mt-4">
+            {% for notification in notifications_data %}
+                <div class="col-md-4"> <!-- Use Bootstrap's grid system to create columns -->
+                    {% if notification.type == 'contract' %}
+                        <div class="list-group-item bg-info text-white mb-4">
+                            <h5 class="mb-1">Contract ID: {{ notification.contract.contract_id }}</h5>
+                            <p class="mb-1"><strong>Action:</strong> {{ notification.action }}</p>
+                            <p class="mb-1"><strong>Reason:</strong> {{ notification.reason }}</p>
+                        </div>
+                    {% elif notification.type == 'payment' %}
+                        <div class="list-group-item bg-success text-white mb-4">
+                            <h5 class="mb-1">Payment ID: {{ notification.payment_id }}</h5>
+                            <p class="mb-1"><strong>Amount:</strong> {{ notification.amount }}</p>
+                            <p class="mb-1"><strong>Date:</strong> {{ notification.date }}</p>
+                            <p class="mb-1"><strong>Payment Method:</strong> {{ notification.payment_method }}</p>
+                            <p class="mb-1"><strong>Payment Reference No:</strong> {{ notification.payment_reference_no }}</p>
+                        </div>
+                    {% elif notification.type == 'maintenance' %}
+                        <div class="list-group-item bg-warning text-dark mb-4">
+                            <h5 class="mb-1">Maintenance Request</h5>
+                            <p class="mb-1"><strong>Tenant Name:</strong> {{ notification.tenant_name }}</p>
+                            <p class="mb-1"><strong>Unit ID:</strong> {{ notification.unit_id }}</p>
+                            <p class="mb-1"><strong>Maintenance Type:</strong> {{ notification.maintenance_type }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
