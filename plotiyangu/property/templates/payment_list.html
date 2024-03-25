@@ -7,7 +7,8 @@
 {% block content %}
     <h1>Payments List</h1>
     <a href="{% url 'add_payment' %}" class="add-button">Add new Payment</a> <!-- Green button -->
-    <table>
+    <button onclick="printTable()" class="btn btn-primary">Print Payment Statement</button>    
+    <table id="printTable" class="table">
         <thead>
             <tr>
                 <th>Payment ID</th>
@@ -21,7 +22,7 @@
                 <!-- Add more columns if needed -->
             </tr>
         </thead>
-        <tbody>
+        <tbody class="printable-content">
             {% for payment in payments %}
                 <tr>
                     <td>{{ payment.payment_id }}</td>
@@ -40,3 +41,4 @@
         </tbody>
     </table>
 {% endblock %}
+

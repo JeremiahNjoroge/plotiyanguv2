@@ -21,16 +21,6 @@
             color: #777;
         }        
     </style>
-    <script>
-        function togglePassword() {
-            var passwordInput = document.getElementById("password");
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-            } else {
-                passwordInput.type = "password";
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="login-form">
@@ -40,7 +30,7 @@
             {% if error_message %}
                 <p class="error-message">{{ error_message }}</p>
             {% endif %}
-            <label for="username">Username/Email:</label><br>
+            <label for="username">Username:</label><br>
             <input type="text" id="username" name="username" required><br>
             <label for="password">Password:</label><br>
             <input type="password" id="password" name="password" required><br>
@@ -50,5 +40,10 @@
         </form>
         <p>If you forgot your password, please contact the landlord.</p>
     </div>
+    <footer>
+        <!-- Your footer content goes here -->
+        <p>&copy; 2024 PlotiYangu Property Management System. All rights reserved.</p>
+    </footer>
+    <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

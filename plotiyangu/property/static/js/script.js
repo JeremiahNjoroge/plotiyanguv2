@@ -6,13 +6,19 @@ function toggleSidebar() {
     content.classList.toggle('collapsed');
 }
 
-document.getElementById('generatePdfButton').addEventListener('click', function() {
-    // Create a new jsPDF instance
-    const doc = new jsPDF();
+function togglePassword() {
+    var passwordInput = document.getElementById("password");
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+    } else {
+        passwordInput.type = "password";
+    }
+}
 
-    // Add the table to the PDF
-    doc.autoTable({html: 'table'});
-
-    // Save the PDF
-    doc.save('payment_statement.pdf');
-});
+function printTable() {
+    var printContent = document.getElementById('printTable').outerHTML;
+    var originalContent = document.body.innerHTML;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
+}

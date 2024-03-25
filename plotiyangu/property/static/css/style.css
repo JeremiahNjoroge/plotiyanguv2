@@ -273,6 +273,14 @@ header {
     margin: 0 auto;
 }
 
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .printable-content, .printable-content * {
+        visibility: visible;
+    }
+}
 /* Content Styles */
 .content {
     margin-top: 60px;

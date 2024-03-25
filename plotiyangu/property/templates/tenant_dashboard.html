@@ -4,8 +4,34 @@
 {% endblock %}
 
 {% csrf_token %}
+{% load static %}
 {% block content %}
+
 <div class="container">
+    <style>
+        .content {
+            background-image: url("{% static 'images/apartment.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            height: 100vh;
+            transition: margin-left 0.3s ease;
+            /* Set text color, size, and weight */
+            color: black;
+            /* Set opacity of the background image */
+        }
+
+        .content h1 {
+            /* Make h1 text big, bold, and centered */
+            text-align: center;
+        }
+
+        .content p {
+            /* Make paragraph text big, bold, and centered */
+            text-align: center;
+        }
+    </style>
     <h1>Welcome, {{ tenant.username }}!</h1>
 
     {% if profile_edited %}
