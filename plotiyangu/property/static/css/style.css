@@ -21,13 +21,13 @@ body {
 
 .login-form {
     width: 300px;
-    padding: 20px;
+    padding: 10px;
     background-color: #634b34; /* Brown background */
     border-radius: 8px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
     color: #fff; /* White text color */
     margin: auto; /* Center the form horizontally */
-    margin-top: 20vh; /* Adjust vertical margin to center the form vertically */
+    margin-top: 10vh; /* Adjust vertical margin to center the form vertically */
 }
 
 .login-form h2 {

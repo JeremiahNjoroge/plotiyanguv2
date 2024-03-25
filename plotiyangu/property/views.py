@@ -24,6 +24,9 @@ import pdfkit
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
 
+def home(request):
+    return render(request, 'index.html')
+
 @login_required
 def profile_edit(request):
     if request.method == 'POST':
