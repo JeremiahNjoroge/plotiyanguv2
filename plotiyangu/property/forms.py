@@ -17,19 +17,40 @@ class TenantForm(forms.ModelForm):
 class UnitForm(forms.ModelForm):
     class Meta:
         model = Unit
-        fields = ['description', 'unit_type', 'rent_amount', 'property_name']
+        fields = ['description', 'unit_type', 'rent_amount', 'property_name', 'active']
 
 class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
         fields = ['tenant_name', 'unit_id', 'start_date', 'end_date', 'contract_image']
-    def clean_unit_id(self):
-        unit_id = self.cleaned_data.get('unit_id')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        unit_id = cleaned_data.get('unit_id')
+        tenant_name = cleaned_data.get('tenant_name')
+
+        # Check if the unit is already assigned to another tenant's contract
         existing_contract = Contract.objects.filter(unit_id=unit_id).first()
         if existing_contract:
             raise forms.ValidationError("This unit is already assigned to another tenant's contract.")
-        return unit_id
+
+        # Check if the tenant already has an active contract
+        existing_contract = Contract.objects.filter(tenant_name=tenant_name).first()
+        if existing_contract:
+            raise forms.ValidationError("This tenant already has an active contract for another unit.")
+
+        return cleaned_data
     
+class EditContractForm(forms.ModelForm):
+    class Meta:
+        model = Contract
+        fields = ['tenant_name', 'unit_id', 'start_date', 'end_date', 'contract_image']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        # Exclude validation for unit_id and tenant_name
+        return cleaned_data
+
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
