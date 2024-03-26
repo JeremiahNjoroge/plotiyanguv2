@@ -85,6 +85,7 @@ class Property(models.Model):
 
     def __str__(self):
         return self.property_name
+    
 
 class Unit(models.Model):
     unit_id = models.CharField(primary_key=True, max_length=10, unique=True, editable=False)

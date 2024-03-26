@@ -36,17 +36,30 @@
         #forgotPasswordText {
             font-size: 14px;
             color: #777;
-        }        
+        }       
+         /* Centered message */
+        .centered-message {
+            justify-content: center;
+            align-items: center;
+        }
+                
     </style>
 </head>
 <body>
-        <!-- Navigation Bar -->
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="/">PlotiYangu</a>
         </div>
-    </nav>
-
+    </nav> 
+    <div class="centered-message">
+        <div class="alert alert-dismissible {% if messages %}alert-{{ messages.tags }}{% endif %}" role="alert">
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    </div>
     <div class="login-form">
         <h2>PlotiYangu: Login</h2>
         <form method="post">

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Payment Arrears
+{% endblock %}
+
+{% block content %}
+    <h1>Payment Arrears</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Contract ID</th>
+                <th>Tenant Name</th>
+                <th>Unit Type</th>
+                <th>Rent Arrears</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in arrears %}
+            <tr>
+                <td>{{ item.contract.contract_id }}</td>
+                <td>{{ item.contract.tenant_name }}</td>
+                <td>{{ item.contract.unit_id }}</td>
+                <td style="color: {% if item.rent_arrears > 0 %}red{% elif item.rent_arrears < 0 %}green{% else %}black{% endif %}">
+                    {{ item.rent_arrears }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

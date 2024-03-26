@@ -4,30 +4,48 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Payment Statement</h1>
-    <button id="generatePdfButton">Generate PDF</button>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Payment ID</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Payment Method</th>
-                <th>Reference No.</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for payment in payments %}
-            <tr>
-                <td>{{ payment.payment_id }}</td>
-                <td>{{ payment.amount }}</td>
-                <td>{{ payment.date }}</td>
-                <td>{{ payment.payment_method }}</td>
-                <td>{{ payment.payment_reference_no }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container">
+        <h1 class="mt-4 mb-4">Payment Statement</h1>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Payment Overview</h5>
+                        <p class="card-text"><strong>Total Rent Paid:</strong> {{ total_rent_paid }}</p>
+                        <p class="card-text" style="color: {% if rent_arrears > 0 %}red{% else %}inherit{% endif %};"><strong>Rent Arrears:</strong> {{ rent_arrears }}</p>
+                        <p class="card-text" style="color: {% if overpayments > 0 %}green{% else %}inherit{% endif %};"><strong>Overpayments:</strong> {{ overpayments }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <button id="generatePdfButton" class="btn btn-primary float-end mb-4">Generate PDF</button>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Payment ID</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Payment Method</th>
+                    <th>Reference No.</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.payment_id }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td>{{ payment.date }}</td>
+                    <td>{{ payment.payment_method }}</td>
+                    <td>{{ payment.payment_reference_no }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
     <script>

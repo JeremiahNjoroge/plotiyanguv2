@@ -23,6 +23,9 @@ from django.conf import settings
 import pdfkit
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
+from .decorators import landlord_required, tenant_required
+from datetime import datetime
+from django.db.models import Sum, F, ExpressionWrapper, DecimalField, Value
 
 def home(request):
     return render(request, 'index.html')
@@ -65,6 +68,7 @@ def user_login(request):
                 return redirect('admin')
         else:
             error_message = "Invalid username or password."
+            messages.error(request, error_message)
             return render(request, 'login.html', {'error_message': error_message})
     else:
         return render(request, 'login.html')
@@ -76,6 +80,7 @@ def logout_user(request):
     logout(request)
     return redirect('login')
 
+@landlord_required
 @login_required
 def landlord_dashboard(request):
     """
@@ -105,6 +110,8 @@ def send_message(request):
     
     return render(request, 'chat.html')
 
+@landlord_required
+@login_required
 def landlord_notifications(request):
     # Check if the file exists
     file_path = 'notifications.json'
@@ -177,6 +184,8 @@ def count_tenant_notifications():
 
     return len(tenant_notifications)
 
+@landlord_required
+@login_required
 def property_list(request):
     """
     View function to display the list of properties.
@@ -185,6 +194,9 @@ def property_list(request):
     return render(request, 'property_list.html', {'properties': properties})
 from django.shortcuts import render
 from .models import Property, Unit
+
+@landlord_required
+@login_required
 def property_detail(request, property_id):
     try:
         # Retrieve the property object
@@ -218,6 +230,8 @@ def property_detail(request, property_id):
         # Handle the case where the property does not exist
         return render(request, 'property_not_found.html')
 
+@landlord_required
+@login_required
 def edit_property(request, property_id):
     """
     View function to edit a property.
@@ -232,6 +246,8 @@ def edit_property(request, property_id):
         form = PropertyForm(instance=property)
     return render(request, 'edit_property.html', {'form': form})
 
+@landlord_required
+@login_required
 def delete_property(request, property_id):
     """
     View function to delete a property.
@@ -242,6 +258,8 @@ def delete_property(request, property_id):
         return redirect('landlord_dashboard')
     return render(request, 'delete_property.html', {'property': property})
 
+@landlord_required
+@login_required
 def tenant_list(request):
     tenants = Tenant.objects.all()
     # Search by tenant ID or name
@@ -250,6 +268,8 @@ def tenant_list(request):
         tenants = tenants.filter(Q(tenant_id__icontains=search_query) | Q(username__icontains=search_query))    
     return render(request, 'tenant_list.html', {'tenants': tenants})
 
+@landlord_required
+@login_required
 def add_tenant(request):
     if request.method == 'POST':
         form = TenantForm(request.POST)
@@ -270,6 +290,8 @@ def add_tenant(request):
     
     return render(request, 'add_tenant.html', {'form': form})
 
+@landlord_required
+@login_required
 def edit_tenant(request, tenant_id):
     tenant = get_object_or_404(Tenant, tenant_id=tenant_id)
     if request.method == 'POST':
@@ -281,6 +303,8 @@ def edit_tenant(request, tenant_id):
         form = TenantForm(instance=tenant)
     return render(request, 'edit_tenant.html', {'form': form})
 
+@landlord_required
+@login_required
 def delete_tenant(request, tenant_id):
     tenant = get_object_or_404(Tenant, tenant_id=tenant_id)
     if request.method == 'POST':
@@ -288,6 +312,8 @@ def delete_tenant(request, tenant_id):
         return redirect('tenant_list')
     return render(request, 'delete_tenant.html', {'tenant': tenant})
 
+@landlord_required
+@login_required
 def tenant_detail(request, tenant_id):
     # Fetch the tenant object
     tenant = get_object_or_404(Tenant, tenant_id=tenant_id)
@@ -304,6 +330,8 @@ def tenant_detail(request, tenant_id):
         'payments': payments,
     })
 
+@landlord_required
+@login_required
 def unit_list(request):
     units = Unit.objects.all()
 
@@ -322,6 +350,8 @@ def unit_list(request):
 
     return render(request, 'unit_list.html', {'units': units})
 
+@landlord_required
+@login_required
 def add_unit(request):
     if request.method == 'POST':
         form = UnitForm(request.POST)
@@ -333,6 +363,8 @@ def add_unit(request):
     
     return render(request, 'add_unit.html', {'form': form})
 
+@landlord_required
+@login_required
 def edit_unit(request, unit_id):
     unit = get_object_or_404(Unit, unit_id=unit_id)
     if request.method == 'POST':
@@ -344,6 +376,8 @@ def edit_unit(request, unit_id):
         form = UnitForm(instance=unit)
     return render(request, 'edit_unit.html', {'form': form})
 
+@landlord_required
+@login_required
 def delete_unit(request, unit_id):
     unit = get_object_or_404(Unit, unit_id=unit_id)
     if request.method == 'POST':
@@ -351,10 +385,14 @@ def delete_unit(request, unit_id):
         return redirect('unit_list')
     return render(request, 'delete_unit.html', {'unit': unit})
 
+@landlord_required
+@login_required
 def contract_list(request):
     contracts = Contract.objects.all()
     return render(request, 'contract_list.html', {'contracts': contracts})
 
+@landlord_required
+@login_required
 def add_contract(request):
     if request.method == 'POST':
         form = ContractForm(request.POST)
@@ -366,7 +404,8 @@ def add_contract(request):
     
     return render(request, 'add_contract.html', {'form': form})
 
-
+@landlord_required
+@login_required
 def edit_contract(request, contract_id):
     contract = get_object_or_404(Contract, contract_id=contract_id)
     if request.method == 'POST':
@@ -378,6 +417,8 @@ def edit_contract(request, contract_id):
         form = ContractForm(instance=contract)
     return render(request, 'edit_contract.html', {'form': form})
 
+@landlord_required
+@login_required
 def delete_contract(request, contract_id):
     contract = get_object_or_404(Contract, contract_id=contract_id)
     if request.method == 'POST':
@@ -385,10 +426,14 @@ def delete_contract(request, contract_id):
         return redirect('contract_list')
     return render(request, 'delete_contract.html', {'contract': contract})
 
+@landlord_required
+@login_required
 def payment_list(request):
     payments = Payment.objects.all()
     return render(request, 'payment_list.html', {'payments': payments})
 
+@landlord_required
+@login_required
 def add_payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -400,6 +445,8 @@ def add_payment(request):
     
     return render(request, 'add_payment.html', {'form': form})
 
+@landlord_required
+@login_required
 def edit_payment(request, payment_id):
     payment = get_object_or_404(Payment, payment_id=payment_id)
     if request.method == 'POST':
@@ -411,12 +458,32 @@ def edit_payment(request, payment_id):
         form = PaymentForm(instance=payment)
     return render(request, 'edit_payment.html', {'form': form})
 
+@landlord_required
+@login_required
 def delete_payment(request, payment_id):
     payment = get_object_or_404(Payment, payment_id=payment_id)
     if request.method == 'POST':
         payment.delete()
         return redirect('payment_list')
     return render(request, 'delete_payment.html', {'payment': payment})
+
+@landlord_required
+@login_required
+def payment_arrears(request):
+    contracts = Contract.objects.all()
+    arrears = []
+
+    for contract in contracts:
+        payments = Payment.objects.filter(contract_id=contract)
+        total_payments = payments.aggregate(Sum('amount'))['amount__sum'] or 0
+        rent_arrears = contract.unit_id.rent_amount - total_payments
+        arrears.append({
+            'contract': contract,
+            'rent_arrears': rent_arrears,
+            'total_rent_paid': total_payments
+        })
+
+    return render(request, 'payment_arrears.html', {'arrears': arrears})
 
 @login_required
 def tenant_dashboard(request):
@@ -510,9 +577,37 @@ def tenant_payment(request, contract_id):
 def generate_payment_statement(request, contract_id):
     # Retrieve all payments related to the provided contract ID
     payments = Payment.objects.filter(contract_id=contract_id)
+    
+    # Calculate total rent paid for the contract
+    total_rent_paid = payments.aggregate(total_rent_paid=Sum('amount'))['total_rent_paid'] or 0
+    
+    # Get the contract details
+    contract = get_object_or_404(Contract, pk=contract_id)
+    
+    # Calculate rent arrears
+    rent_arrears = ExpressionWrapper(
+        F('unit_id__rent_amount') - total_rent_paid,
+        output_field=DecimalField(max_digits=10, decimal_places=2)
+    )
 
-    # Pass the payments data to the template for rendering
-    return render(request, 'payment_statement.html', {'payments': payments})
+    # Calculate overpayments
+    overpayments = ExpressionWrapper(
+        total_rent_paid - F('unit_id__rent_amount'),
+        output_field=DecimalField(max_digits=10, decimal_places=2)
+    )
+
+    # Evaluate the expressions
+    rent_arrears_value = Contract.objects.filter(pk=contract_id).annotate(rent_arrears=rent_arrears).values('rent_arrears').first()['rent_arrears']
+    overpayments_value = Contract.objects.filter(pk=contract_id).annotate(overpayments=overpayments).values('overpayments').first()['overpayments']
+
+    # Pass the payments data along with other calculated values to the template for rendering
+    return render(request, 'payment_statement.html', {
+        'payments': payments,
+        'total_rent_paid': total_rent_paid,
+        'rent_arrears': rent_arrears_value,
+        'overpayments': overpayments_value,
+        'contract': contract
+    })
 
 
 def request_maintenance(request):
