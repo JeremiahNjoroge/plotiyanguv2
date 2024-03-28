@@ -4,6 +4,35 @@
 {% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+    <h1>Payment Statement</h1>
+    <button id="generatePdfButton">Generate PDF</button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Payment ID</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Payment Method</th>
+                <th>Reference No.</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+            <tr>
+                <td>{{ payment.payment_id }}</td>
+                <td>{{ payment.amount }}</td>
+                <td>{{ payment.date }}</td>
+                <td>{{ payment.payment_method }}</td>
+                <td>{{ payment.payment_reference_no }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+=======
+>>>>>>> development
     <div class="container">
         <h1 class="mt-4 mb-4">Payment Statement</h1>
         
@@ -19,11 +48,19 @@
                 </div>
             </div>
             <div class="col-md-6">
+<<<<<<< HEAD
                 <button id="generatePdfButton" class="btn btn-primary float-end mb-4">Generate PDF</button>
             </div>
         </div>
 
         <table class="table">
+=======
+                <button onclick="printTable()"class="btn btn-primary float-end mb-4">Generate Payment Statement</button>
+            </div>
+        </div>
+
+        <table id="printTable" class="table printable-content">
+>>>>>>> development
             <thead>
                 <tr>
                     <th>Payment ID</th>
@@ -33,7 +70,11 @@
                     <th>Reference No.</th>
                 </tr>
             </thead>
+<<<<<<< HEAD
             <tbody>
+=======
+            <tbody class="printable-content">
+>>>>>>> development
                 {% for payment in payments %}
                 <tr>
                     <td>{{ payment.payment_id }}</td>
@@ -46,18 +87,10 @@
             </tbody>
         </table>
     </div>
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> development
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
-    <script>
-        document.getElementById('generatePdfButton').addEventListener('click', function() {
-            // Create a new jsPDF instance
-            const doc = new jsPDF();
-
-            // Add the table to the PDF
-            doc.autoTable({html: 'table'});
-
-            // Save the PDF
-            doc.save('payment_statement.pdf');
-        });
-    </script>
 {% endblock %}

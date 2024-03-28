@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 {"contract_id": "CE81", "action": "renewal", "reason": "renew to 2028"}
 {"payment_id": "P9880AA0C", "amount": "3893", "date": "2024-03-16", "contract_id": "CE81", "payment_method": "cash", "payment_reference_no": "REIURER2323J"}
 {"unit_id": "U3F8", "tenant_name": "Snowking", "maintenance_type": "water"}
 {"payment_id": "P61ECCE17", "amount": "10921", "date": "2024-03-24", "contract_id": "C3D8", "payment_method": "mpesa", "payment_reference_no": "YYEW73803D"}
 {"payment_id": "P1E680F03", "amount": "1079", "date": "2024-03-29", "contract_id": "C3D8", "payment_method": "mpesa", "payment_reference_no": ""}
+=======
+>>>>>>> development

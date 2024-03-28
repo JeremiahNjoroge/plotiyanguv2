@@ -1,23 +1,18 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView
 from .models import Property, Tenant, Unit, Contract, Payment, CustomUser
-from .forms import PropertyForm, TenantForm, UnitForm, ContractForm, PaymentForm
-from .tables import PropertyTable
-from django_tables2.export.views import ExportMixin
+from .forms import PropertyForm, TenantForm, UnitForm, ContractForm, PaymentForm, EditContractForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Sum
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
-from django.contrib.auth.models import AnonymousUser
-from django.http import HttpResponseForbidden
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 import json
-from django.http import JsonResponse
 import os
+<<<<<<< HEAD
 from django.template.loader import render_to_string
 from django.conf import settings
 import pdfkit
@@ -26,6 +21,9 @@ from django.views.decorators.http import require_POST
 from .decorators import landlord_required, tenant_required
 from datetime import datetime
 from django.db.models import Sum, F, ExpressionWrapper, DecimalField, Value
+=======
+from .decorators import landlord_required,tenant_required
+>>>>>>> development
 
 def home(request):
     return render(request, 'index.html')
@@ -67,8 +65,12 @@ def user_login(request):
             elif user.is_superuser:
                 return redirect('admin')
         else:
+<<<<<<< HEAD
             error_message = "Invalid username or password."
             messages.error(request, error_message)
+=======
+            error_message = "Invalid Email or password."
+>>>>>>> development
             return render(request, 'login.html', {'error_message': error_message})
     else:
         return render(request, 'login.html')
@@ -274,17 +276,21 @@ def add_tenant(request):
     if request.method == 'POST':
         form = TenantForm(request.POST)
         if form.is_valid():
-            # Create CustomUser instance with user_type=tenant and default password 'tenant'
-            user_data = form.cleaned_data
-            username = user_data['username']
-            email = user_data['email']
-            password = make_password('tenant')  # Hash default password
-            CustomUser.objects.create(username=username, email=email, password=password, user_type='tenant')
+            # Check if the username already exists
+            username = form.cleaned_data['username']
+            if CustomUser.objects.filter(username=username).exists():
+                form.add_error('username', 'This username is already taken. Please choose a different one.')
+            else:
+                # Create CustomUser instance with user_type=tenant and default password 'tenant'
+                user_data = form.cleaned_data
+                email = user_data['email']
+                password = make_password('tenant')  # Hash default password
+                CustomUser.objects.create(username=username, email=email, password=password, user_type='tenant')
 
-            # Create Tenant instance
-            form.save()
+                # Create Tenant instance
+                form.save()
 
-            return redirect('tenant_list')
+                return redirect('tenant_list')
     else:
         form = TenantForm()
     
@@ -409,12 +415,12 @@ def add_contract(request):
 def edit_contract(request, contract_id):
     contract = get_object_or_404(Contract, contract_id=contract_id)
     if request.method == 'POST':
-        form = ContractForm(request.POST, instance=contract)
+        form = EditContractForm(request.POST, instance=contract)
         if form.is_valid():
             form.save()
             return redirect('contract_list')
     else:
-        form = ContractForm(instance=contract)
+        form = EditContractForm(instance=contract)
     return render(request, 'edit_contract.html', {'form': form})
 
 @landlord_required
