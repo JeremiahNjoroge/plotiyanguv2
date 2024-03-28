@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
     'django_tables2',
     'property',
-    'admin_interface',
     'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
