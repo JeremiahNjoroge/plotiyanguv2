@@ -54,7 +54,7 @@ def user_login(request):
             elif user.is_superuser:
                 return redirect('admin')
         else:
-            error_message = "Invalid username or password."
+            error_message = "Invalid Email or password."
             return render(request, 'login.html', {'error_message': error_message})
     else:
         return render(request, 'login.html')
