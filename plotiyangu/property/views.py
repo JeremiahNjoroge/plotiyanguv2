@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 import json
 import os
 from .decorators import landlord_required,tenant_required
+from django.db.models import Sum, F, ExpressionWrapper, DecimalField
 
 def home(request):
     return render(request, 'index.html')
@@ -522,9 +523,37 @@ def tenant_payment(request, contract_id):
 def generate_payment_statement(request, contract_id):
     # Retrieve all payments related to the provided contract ID
     payments = Payment.objects.filter(contract_id=contract_id)
+    
+    # Calculate total rent paid for the contract
+    total_rent_paid = payments.aggregate(total_rent_paid=Sum('amount'))['total_rent_paid'] or 0
+    
+    # Get the contract details
+    contract = get_object_or_404(Contract, pk=contract_id)
+    
+    # Calculate rent arrears
+    rent_arrears = ExpressionWrapper(
+        F('unit_id__rent_amount') - total_rent_paid,
+        output_field=DecimalField(max_digits=10, decimal_places=2)
+    )
 
-    # Pass the payments data to the template for rendering
-    return render(request, 'payment_statement.html', {'payments': payments})
+    # Calculate overpayments
+    overpayments = ExpressionWrapper(
+        total_rent_paid - F('unit_id__rent_amount'),
+        output_field=DecimalField(max_digits=10, decimal_places=2)
+    )
+
+    # Evaluate the expressions
+    rent_arrears_value = Contract.objects.filter(pk=contract_id).annotate(rent_arrears=rent_arrears).values('rent_arrears').first()['rent_arrears']
+    overpayments_value = Contract.objects.filter(pk=contract_id).annotate(overpayments=overpayments).values('overpayments').first()['overpayments']
+
+    # Pass the payments data along with other calculated values to the template for rendering
+    return render(request, 'payment_statement.html', {
+        'payments': payments,
+        'total_rent_paid': total_rent_paid,
+        'rent_arrears': rent_arrears_value,
+        'overpayments': overpayments_value,
+        'contract': contract
+    })
 
 
 def request_maintenance(request):
