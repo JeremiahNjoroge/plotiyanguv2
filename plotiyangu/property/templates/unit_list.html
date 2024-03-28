@@ -26,7 +26,9 @@
         <input type="text" name="search" id="search" value="{{ request.GET.search }}" style="flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px;">
         <button type="submit" style="padding: 5px 10px; background-color: #007bff; color: #fff; border: none; border-radius: 5px;">Search</button>
     </form>
-
+    <div>
+        <p>Total Units: {{ units|length }}</p>
+    </div>
 
     <table>
         <thead>

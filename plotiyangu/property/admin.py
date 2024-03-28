@@ -27,7 +27,8 @@ class PaymentAdmin(admin.ModelAdmin):
     search_fields = ('payment_id', 'contract_id__contract_id')
 
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name', 'user_type', 'is_staff', 'is_active')  
+    list_display = ('username', 'email', 'user_type', 'is_staff', 'is_active')  
+
 admin.site.register(Tenant, TenantAdmin)
 admin.site.register(Caretaker, CaretakerAdmin)
 admin.site.register(Property, PropertyAdmin)

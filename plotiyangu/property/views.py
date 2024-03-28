@@ -1,28 +1,18 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView
 from .models import Property, Tenant, Unit, Contract, Payment, CustomUser
 from .forms import PropertyForm, TenantForm, UnitForm, ContractForm, PaymentForm, EditContractForm
-from .tables import PropertyTable
-from django_tables2.export.views import ExportMixin
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Sum
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
-from django.contrib.auth.models import AnonymousUser
-from django.http import HttpResponseForbidden
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 import json
-from django.http import JsonResponse
 import os
-from django.template.loader import render_to_string
-from django.conf import settings
-import pdfkit
-from django.http import HttpResponse
-from django.views.decorators.http import require_POST
+from .decorators import landlord_required,tenant_required
 
 def home(request):
     return render(request, 'index.html')
@@ -421,6 +411,24 @@ def delete_payment(request, payment_id):
         payment.delete()
         return redirect('payment_list')
     return render(request, 'delete_payment.html', {'payment': payment})
+
+@landlord_required
+@login_required
+def payment_arrears(request):
+    contracts = Contract.objects.all()
+    arrears = []
+
+    for contract in contracts:
+        payments = Payment.objects.filter(contract_id=contract)
+        total_payments = payments.aggregate(Sum('amount'))['amount__sum'] or 0
+        rent_arrears = contract.unit_id.rent_amount - total_payments
+        arrears.append({
+            'contract': contract,
+            'rent_arrears': rent_arrears,
+            'total_rent_paid': total_payments
+        })
+
+    return render(request, 'payment_arrears.html', {'arrears': arrears})
 
 @login_required
 def tenant_dashboard(request):

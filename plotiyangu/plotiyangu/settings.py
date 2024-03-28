@@ -29,7 +29,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,6 +57,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'plotiyangu.urls'
+
+MESSAGE_STORAGE = "django.contrib.messages.storage.cookie.CookieStorage"
 
 TEMPLATES = [
     {
@@ -144,4 +145,9 @@ AUTH_USER_MODEL = 'property.CustomUser'
 # Crispy Forms settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-WKHTMLTOPDF_PATH = '/wkhtmltopdf.exe'
+SESSION_SAVE_EVERY_REQUEST = True
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SESSION_COOKIE_AGE = 10800
+

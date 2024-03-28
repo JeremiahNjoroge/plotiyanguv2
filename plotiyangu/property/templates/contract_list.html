@@ -7,6 +7,9 @@
 {% block content %}
     <h1>Contract List</h1>
     <a href="{% url 'add_contract' %}" class="add-button">Add new Contract</a> <!-- Green button -->
+    <div>
+        <p>Total Contracts: {{ contracts|length }}</p>
+    </div>
     <table>
         <thead>
             <tr>

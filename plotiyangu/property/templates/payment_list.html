@@ -7,8 +7,12 @@
 {% block content %}
     <h1>Payments List</h1>
     <a href="{% url 'add_payment' %}" class="add-button">Add new Payment</a> <!-- Green button -->
+    <a href="{% url 'payment_arrears' %}" class="add-button">Payment Arrears</a>
+    <div>
+        <p>Total Payments: {{ payments|length }}</p>
+    </div>
     <button onclick="printTable()" class="btn btn-primary">Print Payment Statement</button>    
-    <table id="printTable" class="table printable-content">
+    <table id="printTable" class="table">
         <thead>
             <tr>
                 <th>Payment ID</th>
@@ -41,4 +45,3 @@
         </tbody>
     </table>
 {% endblock %}
-
