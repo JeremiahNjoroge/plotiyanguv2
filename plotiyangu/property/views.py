@@ -86,7 +86,7 @@ def send_message(request):
 
         # Construct message data
         message_data = {
-            'sender': 'landlord',  # Assuming the landlord is the sender
+            'sender': 'landlord',  # landlord is the sender
             'message': message
         }
 
@@ -385,6 +385,10 @@ def delete_unit(request, unit_id):
 @landlord_required
 def contract_list(request):
     contracts = Contract.objects.all()
+    # Search by tenant ID or name
+    search_query = request.GET.get('search')
+    if search_query:
+        contracts = contracts.filter(Q(contract_id__icontains=search_query))  
     return render(request, 'contract_list.html', {'contracts': contracts})
 
 @login_required

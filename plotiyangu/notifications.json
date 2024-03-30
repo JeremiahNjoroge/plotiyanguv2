@@ -2,3 +2,6 @@
 {"unit_id": " U7EF", "tenant_name": "Pete", "maintenance_type": "My light switch is not working"}
 {"contract_id": "C0FF", "action": "renewal", "reason": "I want to renew my tenant contract from  June 18, 2024 to January 15, 2025"}
 {"contract_id": "C5C3", "action": "termination", "reason": "I plan to vacate on February 1,2024 Kindly requesting for my deposit"}
+{"unit_id": "U009", "tenant_name": "Hermina", "maintenance_type": "Pipe leakage"}
+{"payment_id": "P09AECA9D", "amount": "35932", "date": "2024-03-30", "contract_id": "C32A", "payment_method": "cash", "payment_reference_no": ""}
+{"unit_id": "UC48", "tenant_name": "Jeremiah", "maintenance_type": "Sink tap is broken"}

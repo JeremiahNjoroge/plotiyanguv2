@@ -24,6 +24,8 @@
                 </button>
         </a>
         </div>
+        <!-- Date and Time -->
+        <span class="date-time">{% now "DATETIME_FORMAT" %}</span>
         <!-- Right section -->
         <div class="right-section">
             <!-- Logged in user and dropdown for logout -->
@@ -44,7 +46,6 @@
         <h2>Tenant</h2>
         <ul>
             <li><a href="{% url 'tenant_dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
-            <li><a href="{% url 'profile_edit' %}"><i class="fas fa-user"></i> Profile</a></li>
             {% for contract in contracts %}
             <li><a href="{% url 'tenant_contract' contract_id=contract.contract_id %}"><i class="fas fa-file-contract"></i> Contract {{ contract.contract_id }}</a></li>
             {% endfor %}
