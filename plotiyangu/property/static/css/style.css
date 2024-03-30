@@ -239,8 +239,8 @@ header {
 .toggle-sidebar-btn {
     top: 10px;
     left: 10px;
-    color: #f3e5ab; /* Cream text */
-    background-color: transparent;
+    color: black;
+    background-color: #fff;
     border: none;
     cursor: pointer;
     z-index: 999; /* Ensure the button is above other content */

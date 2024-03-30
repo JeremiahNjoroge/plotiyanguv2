@@ -39,10 +39,6 @@
         </div>
     </header>
     <div class="sidebar">
-        <!-- Add a button to toggle the sidebar -->
-        <button class="toggle-sidebar-btn" onclick="toggleSidebar()">
-            <i class="fas fa-bars"></i> <!-- Icon for the button -->
-        </button>
         <h2>Tenant</h2>
         <ul>
             <li><a href="{% url 'tenant_dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
@@ -57,6 +53,10 @@
             {% endfor %}
             <li><a href="{% url 'request_maintenance' %}"><i class="fas fa-tools"></i>Request Maintenance</a></li>
         </ul>
+        <!-- Add a button to toggle the sidebar -->
+        <button class="toggle-sidebar-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i> <!-- Icon for the button -->
+        </button>
     </div>
     
     <div class="content">
