@@ -22,3 +22,4 @@ function printTable() {
     window.print();
     document.body.innerHTML = originalContent;
 }
+

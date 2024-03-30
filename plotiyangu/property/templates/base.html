@@ -23,13 +23,14 @@
             </button>
         </a>
         </div>
+        <!-- Date and Time -->
+        <span class="date-time">{% now "DATETIME_FORMAT" %}</span>      
         <!-- Right section -->
         <div class="right-section">
             <!-- Logged in user and dropdown for logout -->
             <div class="dropdown">
                 <button class="dropbtn">Welcome, {{ user.username }}</button>
                 <div class="dropdown-content">
-                    <a href="{% url 'profile_edit' %}">Profile</a>
                     <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i>Logout</a>
                 </div>
             </div>

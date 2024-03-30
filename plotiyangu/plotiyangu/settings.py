@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -36,7 +35,6 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
     'django_tables2',
     'property',
-    'admin_interface',
     'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -123,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
@@ -149,5 +147,6 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
-SESSION_COOKIE_AGE = 10800
+SESSION_COOKIE_AGE = 3600
 
+LOGIN_URL = '/login/'
