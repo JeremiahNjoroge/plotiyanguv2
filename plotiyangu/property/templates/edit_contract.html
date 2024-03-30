@@ -3,11 +3,10 @@
 {% block title %}
     Edit Contract
 {% endblock %}
-
 {% block content %}
     <h1>Edit Contract</h1>
     <div class="form-container">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Save Changes</button>
