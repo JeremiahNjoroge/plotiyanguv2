@@ -230,7 +230,7 @@ def edit_property(request, property_id):
     """
     property = get_object_or_404(Property, pk=property_id)
     if request.method == 'POST':
-        form = PropertyForm(request.POST, instance=property)
+        form = PropertyForm(request.POST, request.FILES, instance=property)
         if form.is_valid():
             form.save()
             return redirect('property_detail', property_id=property.property_id)
@@ -264,7 +264,7 @@ def tenant_list(request):
 @landlord_required
 def add_tenant(request):
     if request.method == 'POST':
-        form = TenantForm(request.POST)
+        form = TenantForm(request.POST, request.FILES)
         if form.is_valid():
             # Check if the username already exists
             username = form.cleaned_data['username']
@@ -291,7 +291,7 @@ def add_tenant(request):
 def edit_tenant(request, tenant_id):
     tenant = get_object_or_404(Tenant, tenant_id=tenant_id)
     if request.method == 'POST':
-        form = TenantForm(request.POST, instance=tenant)
+        form = TenantForm(request.POST, request.FILES, instance=tenant )
         if form.is_valid():
             form.save()
             return redirect('tenant_list')
@@ -395,7 +395,7 @@ def contract_list(request):
 @landlord_required
 def add_contract(request):
     if request.method == 'POST':
-        form = ContractForm(request.POST)
+        form = ContractForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('contract_list')
@@ -409,7 +409,7 @@ def add_contract(request):
 def edit_contract(request, contract_id):
     contract = get_object_or_404(Contract, contract_id=contract_id)
     if request.method == 'POST':
-        form = EditContractForm(request.POST, instance=contract)
+        form = EditContractForm(request.POST, request.FILES, instance=contract)
         if form.is_valid():
             form.save()
             return redirect('contract_list')
