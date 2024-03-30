@@ -430,6 +430,9 @@ def delete_contract(request, contract_id):
 @landlord_required
 def payment_list(request):
     payments = Payment.objects.all()
+    search_query = request.GET.get('search')
+    if search_query:
+        payments = payments.filter(Q(payment_id__icontains=search_query))
     return render(request, 'payment_list.html', {'payments': payments})
 
 @login_required

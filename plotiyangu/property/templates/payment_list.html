@@ -11,6 +11,11 @@
     <div>
         <p>Total Payments: {{ payments|length }}</p>
     </div>
+    <form action="" method="GET" class="mb-3" style="display: flex; align-items: center;">
+        <label for="search" style="margin-right: 10px;">Search by Payment Id:</label>
+        <input type="text" name="search" id="search" value="{{ request.GET.search }}" style="flex: 1; padding: 5px; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px;">
+        <button type="submit" style="padding: 5px 10px; background-color: #007bff; color: #fff; border: none; border-radius: 5px;">Search</button>
+    </form>
     <button onclick="printTable()" class="btn btn-primary">Print Payment Statement</button>    
     <table id="printTable" class="table printable-content">
         <thead>
