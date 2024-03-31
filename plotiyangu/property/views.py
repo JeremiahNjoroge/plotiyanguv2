@@ -495,8 +495,6 @@ def payment_arrears(request):
                    f"Unit Type: *{contract.unit_id}*\n" \
                    f"Rent Arrears: *Kes.{rent_arrears}*\n" \
                    f"Next Month's Rent: *Kes.{rent_due_value}*\n\n" \
-                   f"Please note that your current arrears stand at *Kes.{rent_arrears}* " \
-                   f"To clear your dues, the total payment required for the upcoming month is *Kes.{rent_due_value}*\n\n" \
                    f"If you have any questions or concerns, feel free to contact me.\n\n" \
                    f"Thank you."
         
