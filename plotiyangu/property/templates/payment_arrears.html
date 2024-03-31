@@ -17,6 +17,7 @@
                 <th>Unit Type</th>
                 <th>Rent Arrears</th>
                 <th>Next Month's Rent</th>
+                <th>Send Receipt</th>
             </tr>
         </thead>
         <tbody class="printable-content">
@@ -29,6 +30,9 @@
                     {{ item.rent_arrears }}
                 </td>
                 <td>{{ item.rent_due_value }}</td>
+                <td>
+                    <a href="{{ item.whatsapp_link }}" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

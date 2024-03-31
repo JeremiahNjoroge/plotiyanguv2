@@ -12,11 +12,15 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 import json
 import os
+import urllib
+from django.urls import reverse_lazy
+from urllib.parse import urlencode
 from .decorators import landlord_required,tenant_required
 from django.db.models import Sum, F, ExpressionWrapper, DecimalField
 
 def home(request):
     return render(request, 'index.html')
+
 
 @login_required
 def profile_edit(request):
@@ -480,16 +484,36 @@ def payment_arrears(request):
         payments = Payment.objects.filter(contract_id=contract)
         total_payments = payments.aggregate(Sum('amount'))['amount__sum'] or 0
         rent_arrears = contract.unit_id.rent_amount - total_payments
-        # Calculate rent due for the next month
         rent_due_value = contract.unit_id.rent_amount + rent_arrears
+
+        # Get tenant's phone number
+        whatsappphonenumber = contract.tenant_name.phone
+        
+        # Generate WhatsApp link
+        whatsapp_message = f"Hello {contract.tenant_name},\n\n" \
+                   f"This is a reminder regarding your rental payments for Contract ID: {contract.contract_id}.\n\n" \
+                   f"Unit Type: *{contract.unit_id}*\n" \
+                   f"Rent Arrears: *Kes.{rent_arrears}*\n" \
+                   f"Next Month's Rent: *Kes.{rent_due_value}*\n\n" \
+                   f"Please note that your current arrears stand at *Kes.{rent_arrears}* " \
+                   f"To clear your dues, the total payment required for the upcoming month is *Kes.{rent_due_value}*\n\n" \
+                   f"If you have any questions or concerns, feel free to contact me.\n\n" \
+                   f"Thank you."
+        
+        urlencodedtext = urllib.parse.quote(whatsapp_message)
+
+        whatsapp_link = f'https://wa.me/{whatsappphonenumber}/?text={urlencodedtext}'
+
         arrears.append({
             'contract': contract,
             'rent_arrears': rent_arrears,
             'total_rent_paid': total_payments,
-            'rent_due_value' : rent_due_value
+            'rent_due_value': rent_due_value,
+            'whatsapp_link': whatsapp_link
         })
 
     return render(request, 'payment_arrears.html', {'arrears': arrears})
+
 
 @login_required
 @tenant_required
