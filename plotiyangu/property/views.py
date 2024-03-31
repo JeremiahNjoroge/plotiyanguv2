@@ -480,10 +480,13 @@ def payment_arrears(request):
         payments = Payment.objects.filter(contract_id=contract)
         total_payments = payments.aggregate(Sum('amount'))['amount__sum'] or 0
         rent_arrears = contract.unit_id.rent_amount - total_payments
+        # Calculate rent due for the next month
+        rent_due_value = contract.unit_id.rent_amount + rent_arrears
         arrears.append({
             'contract': contract,
             'rent_arrears': rent_arrears,
-            'total_rent_paid': total_payments
+            'total_rent_paid': total_payments,
+            'rent_due_value' : rent_due_value
         })
 
     return render(request, 'payment_arrears.html', {'arrears': arrears})
@@ -587,36 +590,36 @@ def tenant_payment(request, contract_id):
 def generate_payment_statement(request, contract_id):
     # Retrieve all payments related to the provided contract ID
     payments = Payment.objects.filter(contract_id=contract_id)
+
+    # Get the contract details
+    contract = get_object_or_404(Contract, pk=contract_id)
+
+    #show monthly rent
+    monthly_rent = contract.unit_id.rent_amount
     
     # Calculate total rent paid for the contract
     total_rent_paid = payments.aggregate(total_rent_paid=Sum('amount'))['total_rent_paid'] or 0
-    
-    # Get the contract details
-    contract = get_object_or_404(Contract, pk=contract_id)
     
     # Calculate rent arrears
     rent_arrears = ExpressionWrapper(
         F('unit_id__rent_amount') - total_rent_paid,
         output_field=DecimalField(max_digits=10, decimal_places=2)
     )
-
-    # Calculate overpayments
-    overpayments = ExpressionWrapper(
-        total_rent_paid - F('unit_id__rent_amount'),
-        output_field=DecimalField(max_digits=10, decimal_places=2)
-    )
-
+    
     # Evaluate the expressions
     rent_arrears_value = Contract.objects.filter(pk=contract_id).annotate(rent_arrears=rent_arrears).values('rent_arrears').first()['rent_arrears']
-    overpayments_value = Contract.objects.filter(pk=contract_id).annotate(overpayments=overpayments).values('overpayments').first()['overpayments']
+
+    # Calculate rent due for the next month
+    rent_due_value = contract.unit_id.rent_amount + rent_arrears_value
 
     # Pass the payments data along with other calculated values to the template for rendering
     return render(request, 'payment_statement.html', {
         'payments': payments,
+        'monthly_rent' : monthly_rent,
         'total_rent_paid': total_rent_paid,
         'rent_arrears': rent_arrears_value,
-        'overpayments': overpayments_value,
-        'contract': contract
+        'contract': contract,
+        'rent_due_value':rent_due_value
     })
 
 @login_required

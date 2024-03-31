@@ -9,8 +9,8 @@
     <p>Are you sure you want to delete '{{ payment.payment_id }}'?</p>
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Delete</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
         <!-- Cancel button redirects back to property detail page -->
-        <a href="{% url 'payment_list' %}">Cancel</a>
+        <a href="{% url 'payment_list' %}" class="btn btn-primary">Cancel</a>
     </form>
 {% endblock %}

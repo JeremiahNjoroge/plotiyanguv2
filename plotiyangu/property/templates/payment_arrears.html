@@ -6,16 +6,20 @@
 
 {% block content %}
     <h1>Payment Arrears</h1>
-    <table border="1">
+    <div class="col-md-6">
+        <button onclick="printTable()"class="btn btn-primary float-end mb-4">Generate Statement</button>
+    </div>
+    <table border="1" id="printTable" class="table printable-content">
         <thead>
             <tr>
                 <th>Contract ID</th>
                 <th>Tenant Name</th>
                 <th>Unit Type</th>
                 <th>Rent Arrears</th>
+                <th>Next Month's Rent</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="printable-content">
             {% for item in arrears %}
             <tr>
                 <td>{{ item.contract.contract_id }}</td>
@@ -24,6 +28,7 @@
                 <td style="color: {% if item.rent_arrears > 0 %}red{% elif item.rent_arrears < 0 %}green{% else %}black{% endif %}">
                     {{ item.rent_arrears }}
                 </td>
+                <td>{{ item.rent_due_value }}</td>
             </tr>
             {% endfor %}
         </tbody>

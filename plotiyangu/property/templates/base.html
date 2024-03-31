@@ -15,10 +15,10 @@
         <!-- Left section -->
         <div class="left-section">
             <!-- Chat button -->
-            <a href="{% url 'chat' %}"><button class="chat-btn">Chat</button></a>
+            <a href="{% url 'chat' %}"><button class="chat-btn fas fa-comment">Chat</button></a>
         <!-- Notification button with count -->
         <a href="{% url 'landlord_notifications' %}">
-            <button class="notification-btn">
+            <button class="notification-btn fas fa-bell">
                 Notifications {% if notification_count > 0 %}({{ notification_count }}){% endif %}
             </button>
         </a>

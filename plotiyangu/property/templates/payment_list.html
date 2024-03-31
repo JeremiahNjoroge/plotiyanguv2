@@ -6,7 +6,7 @@
 
 {% block content %}
     <h1>Payments List</h1>
-    <a href="{% url 'add_payment' %}" class="add-button">Add new Payment</a> <!-- Green button -->
+    <a href="{% url 'add_payment' %}" class="add-button fas fa-plus">Add new Payment</a> <!-- Green button -->
     <a href="{% url 'payment_arrears' %}" class="add-button">Payment Arrears</a>
     <div>
         <p>Total Payments: {{ payments|length }}</p>
@@ -42,8 +42,8 @@
                     <td>{{ payment.contract_id.unit_id }}</td>
                     <td>{{ payment.payment_reference_no }}</td>
                     <td>
-                        <a href="{% url 'edit_payment' payment.payment_id %}">Edit</a>
-                        <a href="{% url 'delete_payment' payment.payment_id %}">Delete</a>
+                        <a href="{% url 'edit_payment' payment.payment_id %}" class="action-link">Edit</a>
+                        <a href="{% url 'delete_payment' payment.payment_id %}" class="action-link">Delete</a>
                     </td>
                 </tr>
             {% endfor %}

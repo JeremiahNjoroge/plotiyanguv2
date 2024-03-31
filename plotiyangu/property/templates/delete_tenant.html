@@ -9,8 +9,8 @@
     <p>Are you sure you want to delete '{{ tenant.first_name }} {{ tenant.last_name }}'?</p>    
     <form method="post">
         {% csrf_token %}
-        <button type="submit">Delete</button>
+        <button type="submit"  class="btn btn-danger">Delete</button>
         <!-- Cancel button redirects back to property detail page -->
-        <a href="{% url 'tenant_list' %}">Cancel</a>
+        <a href="{% url 'tenant_list' %}" class="btn btn-primary">Cancel</a>
     </form>
 {% endblock %}
