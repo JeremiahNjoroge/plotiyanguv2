@@ -15,8 +15,12 @@ import os
 import urllib
 from django.urls import reverse_lazy
 from urllib.parse import urlencode
+from django.db import IntegrityError
 from .decorators import landlord_required,tenant_required
 from django.db.models import Sum, F, ExpressionWrapper, DecimalField
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 def home(request):
     return render(request, 'index.html')
@@ -445,7 +449,7 @@ def delete_contract(request, contract_id):
 @login_required
 @landlord_required
 def payment_list(request):
-    payments = Payment.objects.all()
+    payments = Payment.objects.all().order_by('-date')  # Sort payments by date in descending order
     search_query = request.GET.get('search')
     if search_query:
         payments = payments.filter(Q(payment_id__icontains=search_query))
@@ -592,36 +596,58 @@ def tenant_payment(request, contract_id):
         payment_method = request.POST.get('payment_method')
         payment_reference_no = request.POST.get('payment_reference_no')
         
-        # Create a Payment object and save it to the database
-        payment = Payment.objects.create(
-            amount=amount,
-            date=date,
-            contract_id=contract,  # Use contract_id instead of contract
-            payment_method=payment_method,
-            payment_reference_no=payment_reference_no
-        )
-        
-        # Save the payment details in a JSON file
-        with open('notifications.json', 'a') as file:
-            payment_data = {
-                'payment_id': payment.payment_id,
+        try:
+            # Create a Payment object and save it to the database
+            payment = Payment.objects.create(
+                amount=amount,
+                date=date,
+                contract_id=contract,
+                payment_method=payment_method,
+                payment_reference_no=payment_reference_no
+            )
+            
+            # Save the payment details in a JSON file
+            with open('notifications.json', 'a') as file:
+                payment_data = {
+                    'payment_id': payment.payment_id,
+                    'amount': amount,
+                    'date': date,
+                    'contract_id': contract_id,
+                    'payment_method': payment_method,
+                    'payment_reference_no': payment_reference_no
+                }
+                json.dump(payment_data, file)
+                file.write('\n')
+
+            # Send email to the tenant
+            subject = 'Payment Confirmation'
+            context = {
                 'amount': amount,
                 'date': date,
-                'contract_id': contract_id,
                 'payment_method': payment_method,
-                'payment_reference_no': payment_reference_no
+                'payment_reference_no': payment_reference_no,
             }
-            json.dump(payment_data, file)
-            file.write('\n')
+            message = render_to_string('payment_email.html', context)
+            plain_message = strip_tags(message)
+            tenant_email = contract.tenant_name.email
+            send_mail(subject, plain_message, 'jekanjoroge0809@gmail.com', [tenant_email], html_message=message)
+            
+            # Add a success message
+            messages.success(request, 'Payment details submitted successfully')
+            
+            # Redirect back to the dashboard or any other desired page
+            return HttpResponseRedirect(reverse('tenant_dashboard'))
         
-        # Add a success message
-        messages.success(request, 'Payment details submitted successfully')
         
-        # Redirect back to the dashboard or any other desired page
-        return HttpResponseRedirect(reverse('tenant_dashboard'))
+        except IntegrityError as e:
+            if 'UNIQUE constraint' in str(e):
+                # Handle duplicate payment reference number
+                messages.success(request, 'Invalid payment. Contact landlord.')
+            else:
+                # Handle other IntegrityError exceptions
+                messages.success(request, 'An error occurred while processing the payment.')
     
     return render(request, 'tenant_payment.html', {'contract': contract})
-
 @login_required
 @tenant_required
 def generate_payment_statement(request, contract_id):

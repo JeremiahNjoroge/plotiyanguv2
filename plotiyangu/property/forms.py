@@ -59,3 +59,7 @@ class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = ['amount', 'date', 'contract_id', 'payment_method', 'payment_reference_no']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }
+        
