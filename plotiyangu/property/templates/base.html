@@ -12,6 +12,19 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head>
 <body>
     <header>
+        {% block extrascripts %}
+            <script>
+                // Check if there is a success message in the Django messages framework
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                            // Display the success message as an alert
+                            alert("{{ message }}");
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </script>
+        {% endblock %}        
         <!-- Left section -->
         <div class="left-section">
             <!-- Chat button -->

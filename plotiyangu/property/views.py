@@ -100,6 +100,7 @@ def send_message(request):
             file.write('\n')
 
         # Redirect back to the chat form
+        messages.success(request, 'Message sent successfully.')
         return HttpResponseRedirect(reverse('chat'))
     
     return render(request, 'chat.html')
@@ -283,8 +284,11 @@ def add_tenant(request):
 
                 # Create Tenant instance
                 form.save()
+                # Add success message
+                messages.success(request, 'Tenant added successfully.')
 
                 return redirect('tenant_list')
+
     else:
         form = TenantForm()
     
@@ -298,6 +302,7 @@ def edit_tenant(request, tenant_id):
         form = TenantForm(request.POST, request.FILES, instance=tenant )
         if form.is_valid():
             form.save()
+            messages.success(request, 'Tenant edited successfully.')
             return redirect('tenant_list')
     else:
         form = TenantForm(instance=tenant)
@@ -309,6 +314,7 @@ def delete_tenant(request, tenant_id):
     tenant = get_object_or_404(Tenant, tenant_id=tenant_id)
     if request.method == 'POST':
         tenant.delete()
+        messages.success(request, 'Tenant deleted successfully.')
         return redirect('tenant_list')
     return render(request, 'delete_tenant.html', {'tenant': tenant})
 
@@ -357,6 +363,7 @@ def add_unit(request):
         form = UnitForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Unit added successfully.')
             return redirect('unit_list')
     else:
         form = UnitForm()
@@ -371,6 +378,7 @@ def edit_unit(request, unit_id):
         form = UnitForm(request.POST, instance=unit)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Unit edited successfully.')
             return redirect('unit_list')
     else:
         form = UnitForm(instance=unit)
@@ -382,6 +390,7 @@ def delete_unit(request, unit_id):
     unit = get_object_or_404(Unit, unit_id=unit_id)
     if request.method == 'POST':
         unit.delete()
+        messages.success(request, 'Unit deleted successfully.')
         return redirect('unit_list')
     return render(request, 'delete_unit.html', {'unit': unit})
 
@@ -402,6 +411,7 @@ def add_contract(request):
         form = ContractForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Contract added successfully.')
             return redirect('contract_list')
     else:
         form = ContractForm()
@@ -416,6 +426,7 @@ def edit_contract(request, contract_id):
         form = EditContractForm(request.POST, request.FILES, instance=contract)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Contract edited successfully.')
             return redirect('contract_list')
     else:
         form = EditContractForm(instance=contract)
@@ -427,6 +438,7 @@ def delete_contract(request, contract_id):
     contract = get_object_or_404(Contract, contract_id=contract_id)
     if request.method == 'POST':
         contract.delete()
+        messages.success(request, 'Contract deleted successfully.')
         return redirect('contract_list')
     return render(request, 'delete_contract.html', {'contract': contract})
 
@@ -446,6 +458,7 @@ def add_payment(request):
         form = PaymentForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Payment added successfully.')
             return redirect('payment_list')
     else:
         form = PaymentForm()
@@ -460,6 +473,7 @@ def edit_payment(request, payment_id):
         form = PaymentForm(request.POST, instance=payment)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Payment edited successfully.')
             return redirect('payment_list')
     else:
         form = PaymentForm(instance=payment)
@@ -471,6 +485,7 @@ def delete_payment(request, payment_id):
     payment = get_object_or_404(Payment, payment_id=payment_id)
     if request.method == 'POST':
         payment.delete()
+        messages.success(request, 'Payment deleted successfully.')
         return redirect('payment_list')
     return render(request, 'delete_payment.html', {'payment': payment})
 
@@ -647,18 +662,23 @@ def generate_payment_statement(request, contract_id):
 @login_required
 @tenant_required
 def request_maintenance(request):
-    # Retrieve the contract associated with the provided contract_id
-    
+    # Retrieve the contract associated with the tenant
+    tenant_username = request.user.username
+    try:
+        tenant = Tenant.objects.get(username=tenant_username)
+        contract = Contract.objects.filter(tenant_name=tenant).first()  # Assuming one tenant has one contract
+    except Tenant.DoesNotExist:
+        return render(request, 'error.html', {'message': 'Tenant not found'})
+
     if request.method == 'POST':
         # Extract maintenance request details from the form
         unit_id = request.POST.get('unit_id')
-        tenant_name = request.POST.get('tenant_name')
         maintenance_type = request.POST.get('maintenance_type')
         
         # Create a maintenance request object and save it to the JSON file
         maintenance_request = {
             'unit_id': unit_id,
-            'tenant_name': tenant_name,
+            'tenant_name': tenant.username,
             'maintenance_type': maintenance_type
         }
         
@@ -673,4 +693,4 @@ def request_maintenance(request):
         # Redirect back to the dashboard or any other desired page
         return HttpResponseRedirect(reverse('tenant_dashboard'))
     
-    return render(request, 'request_maintenance.html')
+    return render(request, 'request_maintenance.html', {'contract': contract})

@@ -1,1 +1,6 @@
 {"payment_id": "PBDB6F099", "amount": "15000", "date": "2024-04-04", "contract_id": "CD2A", "payment_method": "mpesa", "payment_reference_no": "QQWUQI919"}
+{"unit_id": "U085", "tenant_name": "Myron", "maintenance_type": "Sink tap is broken"}
+{"contract_id": "C499", "action": "termination", "reason": "Leaving"}
+{"unit_id": "U5EF", "tenant_name": "Kristian59", "maintenance_type": "Water leakage"}
+{"payment_id": "PC8A19438", "amount": "3000", "date": "2024-04-02", "contract_id": "C1EF", "payment_method": "mpesa", "payment_reference_no": "ASDSRE6YHHJ"}
+{"payment_id": "PB506926E", "amount": "670", "date": "2024-04-03", "contract_id": "C1EF", "payment_method": "mpesa", "payment_reference_no": "RTY6GGHG78"}

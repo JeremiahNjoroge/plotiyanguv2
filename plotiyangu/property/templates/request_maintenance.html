@@ -12,11 +12,11 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="unit_id">Unit ID:</label>
-                        <input type="text" id="unit_id" name="unit_id" class="form-control" required>
+                        <input type="text" id="unit_id" name="unit_id" class="form-control" value="{{ contract.unit_id.unit_id }}" readonly required>
                     </div>
                     <div class="form-group">
                         <label for="tenant_name">Tenant Name:</label>
-                        <input type="text" id="tenant_name" name="tenant_name" class="form-control">
+                        <input type="text" id="tenant_name" name="tenant_name" class="form-control" value="{{ contract.tenant_name }}" readonly>
                     </div>
                     <div class="form-group">
                         <label for="maintenance_type">Maintenance Type:</label>
