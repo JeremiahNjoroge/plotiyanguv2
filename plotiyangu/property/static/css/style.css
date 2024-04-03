@@ -291,6 +291,20 @@ header {
         display: none;
     }
 }
+
+.profile-pic {
+    width: 150px; 
+    height: 150px; 
+    border-radius: 50%; /* Make the image rounded */
+    object-fit: cover; 
+}
+
+.tenant-profile-pic img {
+    width: 40px; /* Adjust width as needed */
+    height: 40px; /* Adjust height as needed */
+    border-radius: 50%; /* Make the image circular */
+    margin-right: 10px; /* Adjust margin as needed */
+}
 /* Content Styles */
 .content {
     margin-top: 60px;
