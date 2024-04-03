@@ -238,10 +238,11 @@ header {
 /* Icon for the toggle button */
 .toggle-sidebar-btn {
     top: 10px;
+    margin-right: 5px;
     left: 10px;
     color: black;
     background-color: #fff;
-    border: none;
+    border: seashell;
     cursor: pointer;
     z-index: 999; /* Ensure the button is above other content */
 }
