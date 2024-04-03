@@ -7,7 +7,7 @@
 
 {% block content %}
     <h1>Unit List</h1>
-    <a href="{% url 'add_unit' %}" class="add-button">Add new Unit</a> <!-- Green button -->
+    <a href="{% url 'add_unit' %}" class="add-button fas fa-plus">Add new Unit</a> <!-- Green button -->
 
     <!-- Filter by status -->
     <form action="" method="GET" class="mb-3" style="display: flex; align-items: center;">
@@ -38,6 +38,7 @@
                 <th>Rent Amount</th>
                 <th>Is it Vacant/Occupied</th>
                 <th>Property Name</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -49,8 +50,10 @@
                     <td>{% if unit.active %}Vacant{% else %}Occupied{% endif %}</td>                    
                     <td>{{ unit.property_name }}</td>
                     <!-- Display other property information -->
-                    <td><a href="{% url 'edit_unit' unit.unit_id %}">Edit</a></td>
-                    <td><a href="{% url 'delete_unit' unit.unit_id %}">Delete</a></td>                
+                    <td>
+                        <a href="{% url 'edit_unit' unit.unit_id %}" class="action-link">Edit</a>
+                        <a href="{% url 'delete_unit' unit.unit_id %}" class="action-link">Delete</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

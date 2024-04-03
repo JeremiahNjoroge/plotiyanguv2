@@ -23,6 +23,10 @@ class ContractForm(forms.ModelForm):
     class Meta:
         model = Contract
         fields = ['tenant_name', 'unit_id', 'start_date', 'end_date', 'contract_image']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
     def clean(self):
         cleaned_data = super().clean()
@@ -55,3 +59,7 @@ class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = ['amount', 'date', 'contract_id', 'payment_method', 'payment_reference_no']
+        widgets = {
+            'date': forms.DateInput(attrs={'type': 'date'}),
+        }
+        

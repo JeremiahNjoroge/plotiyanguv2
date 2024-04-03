@@ -12,7 +12,7 @@
                 <th>Property ID</th>
                 <th>Property Name</th>
                 <th>Location</th>
-                <!-- Add more columns if needed -->
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +22,7 @@
                     <td>{{ property.property_name }}</td>
                     <td>{{ property.location }}</td>
                     <!-- Display other property information -->
-                    <td><a href="{% url 'property_detail' property.property_id %}">View Details</a></td>  <!-- Link to property detail page -->
+                    <td><a href="{% url 'property_detail' property.property_id %}" class="action-link">View Details</a></td>  <!-- Link to property detail page -->
                 </tr>
             {% endfor %}
         </tbody>

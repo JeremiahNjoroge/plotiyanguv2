@@ -12,13 +12,30 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head>
 <body>
     <header>
+        {% block extrascripts %}
+            <script>
+                // Check if there is a success message in the Django messages framework
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                            // Display the success message as an alert
+                            alert("{{ message }}");
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </script>
+        {% endblock %}        
         <!-- Left section -->
+        <!-- Add a button to toggle the sidebar -->
+        <button class="toggle-sidebar-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i> <!-- Icon for the button -->
+        </button>
         <div class="left-section">
             <!-- Chat button -->
-            <a href="{% url 'chat' %}"><button class="chat-btn">Chat</button></a>
+            <a href="{% url 'chat' %}"><button class="chat-btn fas fa-comment">Chat</button></a>
         <!-- Notification button with count -->
         <a href="{% url 'landlord_notifications' %}">
-            <button class="notification-btn">
+            <button class="notification-btn fas fa-bell">
                 Notifications {% if notification_count > 0 %}({{ notification_count }}){% endif %}
             </button>
         </a>
@@ -46,10 +63,7 @@
             <li><a href="{% url 'payment_list' %}"><i class="fas fa-money-check-alt"></i> Payments</a></li>
             <li><a href="{% url 'unit_list' %}"><i class="fas fa-bed""></i> Units</a></li>
         </ul>
-        <!-- Add a button to toggle the sidebar -->
-        <button class="toggle-sidebar-btn" onclick="toggleSidebar()">
-            <i class="fas fa-bars"></i> <!-- Icon for the button -->
-        </button>
+
     </div>
     
     <div class="content">

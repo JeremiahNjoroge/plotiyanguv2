@@ -238,10 +238,10 @@ header {
 /* Icon for the toggle button */
 .toggle-sidebar-btn {
     top: 10px;
+    margin-right: 5px;
     left: 10px;
-    color: black;
-    background-color: #fff;
-    border: none;
+    color: #fff;
+    background-color: black;
     cursor: pointer;
     z-index: 999; /* Ensure the button is above other content */
 }
@@ -287,6 +287,9 @@ header {
     .printable-content, .printable-content * {
         visibility: visible;
     }
+    .printable-content td:last-child, .printable-content th:last-child {
+        display: none;
+    }
 }
 /* Content Styles */
 .content {
@@ -302,6 +305,27 @@ header {
     text-align: left; /* Align content to the left */
 }
 
+.add-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* Style for the action link */
+.action-link {
+    color: #007bff; /* Blue */
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0 10px;
+}
 
 /* Table Styles */
 table {

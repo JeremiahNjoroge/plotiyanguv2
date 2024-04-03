@@ -44,9 +44,10 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">Payment Overview</h5>
+                        <p class="card-text"><strong>Monthly Rent:</strong> {{ monthly_rent }}</p>
                         <p class="card-text"><strong>Total Rent Paid:</strong> {{ total_rent_paid }}</p>
                         <p class="card-text" style="color: {% if rent_arrears > 0 %}red{% else %}inherit{% endif %};"><strong>Rent Arrears:</strong> {{ rent_arrears }}</p>
-                        <p class="card-text" style="color: {% if overpayments > 0 %}green{% else %}inherit{% endif %};"><strong>Overpayments:</strong> {{ overpayments }}</p>
+                        <p class="card-text"><strong>Next month's Rent:</strong> {{ rent_due_value }}</p>
                     </div>
                 </div>
             </div>
@@ -71,6 +72,7 @@
                     <th>Date</th>
                     <th>Payment Method</th>
                     <th>Reference No.</th>
+                    <th></th>
                 </tr>
             </thead>
 <<<<<<< HEAD
@@ -85,6 +87,7 @@
                     <td>{{ payment.date }}</td>
                     <td>{{ payment.payment_method }}</td>
                     <td>{{ payment.payment_reference_no }}</td>
+                    <th></th>
                 </tr>
                 {% endfor %}
             </tbody>

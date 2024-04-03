@@ -23,3 +23,14 @@ function printTable() {
     document.body.innerHTML = originalContent;
 }
 
+//document.querySelectorAll('.contract-details').forEach(function(element) {
+//    element.previousElementSibling.addEventListener('click', function(event) {
+//        event.preventDefault();
+//        var details = element;
+//        if (details.style.display === 'none') {
+//            details.style.display = 'block';
+//        } else {
+//            details.style.display = 'none';
+//        }
+//        });
+//    });

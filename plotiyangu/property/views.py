@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 import json
 import os
 <<<<<<< HEAD
+<<<<<<< HEAD
 from django.template.loader import render_to_string
 from django.conf import settings
 import pdfkit
@@ -22,15 +23,28 @@ from .decorators import landlord_required, tenant_required
 from datetime import datetime
 from django.db.models import Sum, F, ExpressionWrapper, DecimalField, Value
 =======
+=======
+import urllib
+from django.urls import reverse_lazy
+from urllib.parse import urlencode
+from django.db import IntegrityError
+>>>>>>> development
 from .decorators import landlord_required,tenant_required
 <<<<<<< HEAD
 >>>>>>> development
 =======
 from django.db.models import Sum, F, ExpressionWrapper, DecimalField
+<<<<<<< HEAD
+>>>>>>> development
+=======
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 >>>>>>> development
 
 def home(request):
     return render(request, 'index.html')
+
 
 @login_required
 def profile_edit(request):
@@ -116,6 +130,7 @@ def send_message(request):
             file.write('\n')
 
         # Redirect back to the chat form
+        messages.success(request, 'Message sent successfully.')
         return HttpResponseRedirect(reverse('chat'))
     
     return render(request, 'chat.html')
@@ -334,8 +349,11 @@ def add_tenant(request):
 
                 # Create Tenant instance
                 form.save()
+                # Add success message
+                messages.success(request, 'Tenant added successfully.')
 
                 return redirect('tenant_list')
+
     else:
         form = TenantForm()
     
@@ -354,6 +372,7 @@ def edit_tenant(request, tenant_id):
         form = TenantForm(request.POST, request.FILES, instance=tenant )
         if form.is_valid():
             form.save()
+            messages.success(request, 'Tenant edited successfully.')
             return redirect('tenant_list')
     else:
         form = TenantForm(instance=tenant)
@@ -370,6 +389,7 @@ def delete_tenant(request, tenant_id):
     tenant = get_object_or_404(Tenant, tenant_id=tenant_id)
     if request.method == 'POST':
         tenant.delete()
+        messages.success(request, 'Tenant deleted successfully.')
         return redirect('tenant_list')
     return render(request, 'delete_tenant.html', {'tenant': tenant})
 
@@ -433,6 +453,7 @@ def add_unit(request):
         form = UnitForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Unit added successfully.')
             return redirect('unit_list')
     else:
         form = UnitForm()
@@ -452,6 +473,7 @@ def edit_unit(request, unit_id):
         form = UnitForm(request.POST, instance=unit)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Unit edited successfully.')
             return redirect('unit_list')
     else:
         form = UnitForm(instance=unit)
@@ -468,6 +490,7 @@ def delete_unit(request, unit_id):
     unit = get_object_or_404(Unit, unit_id=unit_id)
     if request.method == 'POST':
         unit.delete()
+        messages.success(request, 'Unit deleted successfully.')
         return redirect('unit_list')
     return render(request, 'delete_unit.html', {'unit': unit})
 
@@ -498,6 +521,7 @@ def add_contract(request):
         form = ContractForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Contract added successfully.')
             return redirect('contract_list')
     else:
         form = ContractForm()
@@ -517,6 +541,7 @@ def edit_contract(request, contract_id):
         form = EditContractForm(request.POST, request.FILES, instance=contract)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Contract edited successfully.')
             return redirect('contract_list')
     else:
         form = EditContractForm(instance=contract)
@@ -533,6 +558,7 @@ def delete_contract(request, contract_id):
     contract = get_object_or_404(Contract, contract_id=contract_id)
     if request.method == 'POST':
         contract.delete()
+        messages.success(request, 'Contract deleted successfully.')
         return redirect('contract_list')
     return render(request, 'delete_contract.html', {'contract': contract})
 
@@ -544,7 +570,10 @@ def delete_contract(request, contract_id):
 @landlord_required
 >>>>>>> development
 def payment_list(request):
-    payments = Payment.objects.all()
+    payments = Payment.objects.all().order_by('-date')  # Sort payments by date in descending order
+    search_query = request.GET.get('search')
+    if search_query:
+        payments = payments.filter(Q(payment_id__icontains=search_query))
     return render(request, 'payment_list.html', {'payments': payments})
 
 <<<<<<< HEAD
@@ -559,6 +588,7 @@ def add_payment(request):
         form = PaymentForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Payment added successfully.')
             return redirect('payment_list')
     else:
         form = PaymentForm()
@@ -578,6 +608,7 @@ def edit_payment(request, payment_id):
         form = PaymentForm(request.POST, instance=payment)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Payment edited successfully.')
             return redirect('payment_list')
     else:
         form = PaymentForm(instance=payment)
@@ -594,6 +625,7 @@ def delete_payment(request, payment_id):
     payment = get_object_or_404(Payment, payment_id=payment_id)
     if request.method == 'POST':
         payment.delete()
+        messages.success(request, 'Payment deleted successfully.')
         return redirect('payment_list')
     return render(request, 'delete_payment.html', {'payment': payment})
 
@@ -607,13 +639,34 @@ def payment_arrears(request):
         payments = Payment.objects.filter(contract_id=contract)
         total_payments = payments.aggregate(Sum('amount'))['amount__sum'] or 0
         rent_arrears = contract.unit_id.rent_amount - total_payments
+        rent_due_value = contract.unit_id.rent_amount + rent_arrears
+
+        # Get tenant's phone number
+        whatsappphonenumber = contract.tenant_name.phone
+        
+        # Generate WhatsApp link
+        whatsapp_message = f"Hello {contract.tenant_name},\n\n" \
+                   f"This is a reminder regarding your rental payments for Contract ID: {contract.contract_id}.\n\n" \
+                   f"Unit Type: *{contract.unit_id}*\n" \
+                   f"Rent Arrears: *Kes.{rent_arrears}*\n" \
+                   f"Next Month's Rent: *Kes.{rent_due_value}*\n\n" \
+                   f"If you have any questions or concerns, feel free to contact me.\n\n" \
+                   f"Thank you."
+        
+        urlencodedtext = urllib.parse.quote(whatsapp_message)
+
+        whatsapp_link = f'https://wa.me/{whatsappphonenumber}/?text={urlencodedtext}'
+
         arrears.append({
             'contract': contract,
             'rent_arrears': rent_arrears,
-            'total_rent_paid': total_payments
+            'total_rent_paid': total_payments,
+            'rent_due_value': rent_due_value,
+            'whatsapp_link': whatsapp_link
         })
 
     return render(request, 'payment_arrears.html', {'arrears': arrears})
+
 
 @login_required
 @tenant_required
@@ -679,53 +732,79 @@ def tenant_payment(request, contract_id):
         payment_method = request.POST.get('payment_method')
         payment_reference_no = request.POST.get('payment_reference_no')
         
-        # Create a Payment object and save it to the database
-        payment = Payment.objects.create(
-            amount=amount,
-            date=date,
-            contract_id=contract,  # Use contract_id instead of contract
-            payment_method=payment_method,
-            payment_reference_no=payment_reference_no
-        )
-        
-        # Save the payment details in a JSON file
-        with open('notifications.json', 'a') as file:
-            payment_data = {
-                'payment_id': payment.payment_id,
+        try:
+            # Create a Payment object and save it to the database
+            payment = Payment.objects.create(
+                amount=amount,
+                date=date,
+                contract_id=contract,
+                payment_method=payment_method,
+                payment_reference_no=payment_reference_no
+            )
+            
+            # Save the payment details in a JSON file
+            with open('notifications.json', 'a') as file:
+                payment_data = {
+                    'payment_id': payment.payment_id,
+                    'amount': amount,
+                    'date': date,
+                    'contract_id': contract_id,
+                    'payment_method': payment_method,
+                    'payment_reference_no': payment_reference_no
+                }
+                json.dump(payment_data, file)
+                file.write('\n')
+
+            # Send email to the tenant
+            subject = 'Payment Confirmation'
+            context = {
                 'amount': amount,
                 'date': date,
-                'contract_id': contract_id,
                 'payment_method': payment_method,
-                'payment_reference_no': payment_reference_no
+                'payment_reference_no': payment_reference_no,
             }
-            json.dump(payment_data, file)
-            file.write('\n')
+            message = render_to_string('payment_email.html', context)
+            plain_message = strip_tags(message)
+            tenant_email = contract.tenant_name.email
+            send_mail(subject, plain_message, 'jekanjoroge0809@gmail.com', [tenant_email], html_message=message)
+            
+            # Add a success message
+            messages.success(request, 'Payment details submitted successfully')
+            
+            # Redirect back to the dashboard or any other desired page
+            return HttpResponseRedirect(reverse('tenant_dashboard'))
         
-        # Add a success message
-        messages.success(request, 'Payment details submitted successfully')
         
-        # Redirect back to the dashboard or any other desired page
-        return HttpResponseRedirect(reverse('tenant_dashboard'))
+        except IntegrityError as e:
+            if 'UNIQUE constraint' in str(e):
+                # Handle duplicate payment reference number
+                messages.success(request, 'Invalid payment. Contact landlord.')
+            else:
+                # Handle other IntegrityError exceptions
+                messages.success(request, 'An error occurred while processing the payment.')
     
     return render(request, 'tenant_payment.html', {'contract': contract})
-
 @login_required
 @tenant_required
 def generate_payment_statement(request, contract_id):
     # Retrieve all payments related to the provided contract ID
     payments = Payment.objects.filter(contract_id=contract_id)
+
+    # Get the contract details
+    contract = get_object_or_404(Contract, pk=contract_id)
+
+    #show monthly rent
+    monthly_rent = contract.unit_id.rent_amount
     
     # Calculate total rent paid for the contract
     total_rent_paid = payments.aggregate(total_rent_paid=Sum('amount'))['total_rent_paid'] or 0
-    
-    # Get the contract details
-    contract = get_object_or_404(Contract, pk=contract_id)
     
     # Calculate rent arrears
     rent_arrears = ExpressionWrapper(
         F('unit_id__rent_amount') - total_rent_paid,
         output_field=DecimalField(max_digits=10, decimal_places=2)
     )
+<<<<<<< HEAD
 
     # Calculate overpayments
     overpayments = ExpressionWrapper(
@@ -749,34 +828,45 @@ def generate_payment_statement(request, contract_id):
 =======
 >>>>>>> development
 
+=======
+    
+>>>>>>> development
     # Evaluate the expressions
     rent_arrears_value = Contract.objects.filter(pk=contract_id).annotate(rent_arrears=rent_arrears).values('rent_arrears').first()['rent_arrears']
-    overpayments_value = Contract.objects.filter(pk=contract_id).annotate(overpayments=overpayments).values('overpayments').first()['overpayments']
+
+    # Calculate rent due for the next month
+    rent_due_value = contract.unit_id.rent_amount + rent_arrears_value
 
     # Pass the payments data along with other calculated values to the template for rendering
     return render(request, 'payment_statement.html', {
         'payments': payments,
+        'monthly_rent' : monthly_rent,
         'total_rent_paid': total_rent_paid,
         'rent_arrears': rent_arrears_value,
-        'overpayments': overpayments_value,
-        'contract': contract
+        'contract': contract,
+        'rent_due_value':rent_due_value
     })
 
 @login_required
 @tenant_required
 def request_maintenance(request):
-    # Retrieve the contract associated with the provided contract_id
-    
+    # Retrieve the contract associated with the tenant
+    tenant_username = request.user.username
+    try:
+        tenant = Tenant.objects.get(username=tenant_username)
+        contract = Contract.objects.filter(tenant_name=tenant).first()  # Assuming one tenant has one contract
+    except Tenant.DoesNotExist:
+        return render(request, 'error.html', {'message': 'Tenant not found'})
+
     if request.method == 'POST':
         # Extract maintenance request details from the form
         unit_id = request.POST.get('unit_id')
-        tenant_name = request.POST.get('tenant_name')
         maintenance_type = request.POST.get('maintenance_type')
         
         # Create a maintenance request object and save it to the JSON file
         maintenance_request = {
             'unit_id': unit_id,
-            'tenant_name': tenant_name,
+            'tenant_name': tenant.username,
             'maintenance_type': maintenance_type
         }
         
@@ -791,4 +881,4 @@ def request_maintenance(request):
         # Redirect back to the dashboard or any other desired page
         return HttpResponseRedirect(reverse('tenant_dashboard'))
     
-    return render(request, 'request_maintenance.html')
+    return render(request, 'request_maintenance.html', {'contract': contract})
