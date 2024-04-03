@@ -40,4 +40,9 @@ urlpatterns = [
     path('tenant_notifications/', views.tenants_notifications, name='tenant_notifications'),
     path('generate-payment-statement/<str:contract_id>/', views.generate_payment_statement, name='generate_payment_statement'),
     path('request-maintenance/', views.request_maintenance, name='request_maintenance'),
-    ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
+    ] 
+# Serving static files in development mode
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Serving media files (e.g., profile pictures)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

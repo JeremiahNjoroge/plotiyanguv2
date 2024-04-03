@@ -3,6 +3,7 @@
 {% block title %}
     Tenant Detail: {{ tenant.username }}
 {% endblock %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-4">
@@ -16,6 +17,11 @@
                     Personal Information
                 </div>
                 <div class="card-body">
+                    {% if tenant.profile_pic %}
+                        <img src="{{ tenant.profile_pic.url }}" alt="Profile Picture" class="profile-pic">
+                    {% else %}
+                        <img src="{% static 'images/user.png' %}" alt="Default Profile Picture" class="profile-pic">
+                    {% endif %}
                     <p><strong>First Name:</strong> {{ tenant.first_name }}</p>
                     <p><strong>Last Name:</strong> {{ tenant.last_name }}</p>
                     <p><strong>Email:</strong> {{ tenant.email }}</p>

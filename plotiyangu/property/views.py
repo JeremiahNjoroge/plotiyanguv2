@@ -185,6 +185,8 @@ def count_landlord_notifications():
 @login_required
 @tenant_required
 def tenants_notifications(request):
+    tenant_username = request.user.username
+    tenant = Tenant.objects.get(username=tenant_username)
     # Check if the file exists
     file_path = 'chat.json'
     if not os.path.exists(file_path):
@@ -204,7 +206,7 @@ def tenants_notifications(request):
                 'message': message.get('message')
             })
     
-    return render(request, 'tenant_notifications.html', {'tenant_notifications_data': tenant_notifications_data})
+    return render(request, 'tenant_notifications.html', {'tenant_notifications_data': tenant_notifications_data,'tenant':tenant})
 
 def count_tenant_notifications():
     file_path = 'chat.json'
@@ -701,6 +703,8 @@ def tenant_dashboard(request):
 @tenant_required
 def tenant_contract(request, contract_id):
     contract = get_object_or_404(Contract, pk=contract_id)
+    tenant_username = request.user.username
+    tenant = Tenant.objects.get(username=tenant_username)
     
     if request.method == 'POST':
         action = request.POST.get('action')
@@ -718,12 +722,14 @@ def tenant_contract(request, contract_id):
         # Redirect back to the dashboard
         return HttpResponseRedirect(reverse('tenant_dashboard'))
     
-    return render(request, 'tenant_contract.html', {'contract': contract})
+    return render(request, 'tenant_contract.html', {'contract': contract,'tenant':tenant})
 
 @login_required
 @tenant_required
 def tenant_payment(request, contract_id):
     contract = get_object_or_404(Contract, pk=contract_id)
+    tenant_username = request.user.username
+    tenant = Tenant.objects.get(username=tenant_username)
     
     if request.method == 'POST':
         # Extract payment details from the form
@@ -783,10 +789,12 @@ def tenant_payment(request, contract_id):
                 # Handle other IntegrityError exceptions
                 messages.success(request, 'An error occurred while processing the payment.')
     
-    return render(request, 'tenant_payment.html', {'contract': contract})
+    return render(request, 'tenant_payment.html', {'contract': contract,'tenant':tenant})
 @login_required
 @tenant_required
 def generate_payment_statement(request, contract_id):
+    tenant_username = request.user.username
+    tenant = Tenant.objects.get(username=tenant_username)
     # Retrieve all payments related to the provided contract ID
     payments = Payment.objects.filter(contract_id=contract_id)
 
@@ -844,7 +852,8 @@ def generate_payment_statement(request, contract_id):
         'total_rent_paid': total_rent_paid,
         'rent_arrears': rent_arrears_value,
         'contract': contract,
-        'rent_due_value':rent_due_value
+        'rent_due_value':rent_due_value,
+        'tenant':tenant
     })
 
 @login_required
@@ -881,4 +890,4 @@ def request_maintenance(request):
         # Redirect back to the dashboard or any other desired page
         return HttpResponseRedirect(reverse('tenant_dashboard'))
     
-    return render(request, 'request_maintenance.html', {'contract': contract})
+    return render(request, 'request_maintenance.html', {'contract': contract,'tenant':tenant})
