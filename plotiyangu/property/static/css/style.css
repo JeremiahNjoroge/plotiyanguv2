@@ -240,9 +240,8 @@ header {
     top: 10px;
     margin-right: 5px;
     left: 10px;
-    color: black;
-    background-color: #fff;
-    border: seashell;
+    color: #fff;
+    background-color: black;
     cursor: pointer;
     z-index: 999; /* Ensure the button is above other content */
 }
