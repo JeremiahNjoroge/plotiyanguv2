@@ -5,3 +5,4 @@
 {"payment_id": "PC8A19438", "amount": "3000", "date": "2024-04-02", "contract_id": "C1EF", "payment_method": "mpesa", "payment_reference_no": "ASDSRE6YHHJ"}
 {"payment_id": "PB506926E", "amount": "670", "date": "2024-04-03", "contract_id": "C1EF", "payment_method": "mpesa", "payment_reference_no": "RTY6GGHG78"}
 {"unit_id": "UC5A", "tenant_name": "ann_njeri", "maintenance_type": "Electricity"}
+{"unit_id": "", "tenant_name": "joseph", "maintenance_type": "try"}

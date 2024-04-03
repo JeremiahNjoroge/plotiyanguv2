@@ -288,6 +288,9 @@ header {
     .printable-content, .printable-content * {
         visibility: visible;
     }
+    .printable-content td:last-child, .printable-content th:last-child {
+        display: none;
+    }
 }
 /* Content Styles */
 .content {
