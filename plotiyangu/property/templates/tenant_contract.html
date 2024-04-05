@@ -3,6 +3,7 @@
     Contract Details
 {% endblock %}
 
+{% load static %}
 {% block content %}
     <div class="container mt-4">
         <h1>Contract Details</h1>
@@ -11,6 +12,10 @@
                 <p><strong>Contract ID:</strong> {{ contract.contract_id }}</p>
                 <p><strong>Start Date:</strong> {{ contract.start_date }}</p>
                 <p><strong>End Date:</strong> {{ contract.end_date }}</p>
+                <!-- Button to download rules and regulations PDF -->
+                <a href="{% static 'doc/rental rules and regulations.pdf' %}" download class="download-button">
+                    <i class="fas fa-download"></i> Download Rules & Regulations
+                </a>  
             </div>
             <div class="col-md-6">
                 <!-- Form for contract renewal request -->
@@ -33,7 +38,7 @@
                         <textarea class="form-control" id="termination_reason" name="termination_reason" rows="4"></textarea>
                     </div>
                     <button type="submit" class="btn btn-danger">Request Termination</button>
-                </form>
+                </form>              
             </div>
         </div>
     </div>
