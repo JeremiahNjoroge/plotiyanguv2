@@ -9,7 +9,7 @@ urlpatterns = [
     path('profile/', views.profile_edit, name='profile_edit'),  
     path('chat/', views.send_message, name='chat'),   
     path('login/', views.user_login, name='login'),
-    path('logout/', views.logout_user, name='logout'),  # Map logout URL to view
+    path('logout/', views.logout_user, name='logout'), 
     path('landlord-dashboard/', views.landlord_dashboard, name='landlord_dashboard'),
     path('landlord-notifications/', views.landlord_notifications, name='landlord_notifications'),
     path('properties/', views.property_list, name='property_list'),
@@ -41,8 +41,8 @@ urlpatterns = [
     path('generate-payment-statement/<str:contract_id>/', views.generate_payment_statement, name='generate_payment_statement'),
     path('request-maintenance/', views.request_maintenance, name='request_maintenance'),
     ] 
-# Serving static files in development mode
+# Serving static files
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# Serving media files (e.g., profile pictures)
+# Serving media files
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
