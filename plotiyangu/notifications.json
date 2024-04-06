@@ -1,2 +1,4 @@
 {"payment_id": "PBDB6F099", "amount": "15000", "date": "2024-04-04", "contract_id": "CD2A", "payment_method": "mpesa", "payment_reference_no": "QQWUQI919"}
 {"payment_id": "PAD544AA6", "amount": "530", "date": "2024-04-05", "contract_id": "C426", "payment_method": "mpesa", "payment_reference_no": "ADFGTTHU009"}
+{"unit_id": "UE5C", "tenant_name": "Fred", "maintenance_type": "Sink tap is broken"}
+{"contract_id": "C2A8", "action": "termination", "reason": "I plan to vacate next month"}
