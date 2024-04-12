@@ -358,7 +358,7 @@ def unit_list(request):
     # Search by unit ID
     search_query = request.GET.get('search')
     if search_query:
-        units = units.filter(unit_id__icontains=search_query)
+        units = units.filter(Q(unit_id__icontains=search_query) | Q(unit_type__icontains=search_query))
 
     return render(request, 'unit_list.html', {'units': units})
 
@@ -407,7 +407,7 @@ def contract_list(request):
     # Search by tenant ID or name
     search_query = request.GET.get('search')
     if search_query:
-        contracts = contracts.filter(Q(contract_id__icontains=search_query))  
+        contracts = contracts.filter(Q(contract_id__icontains=search_query) | Q(unit_id__unit_id__icontains=search_query) | Q(tenant_name__username__icontains=search_query))
     return render(request, 'contract_list.html', {'contracts': contracts})
 
 @login_required
@@ -454,7 +454,7 @@ def payment_list(request):
     payments = Payment.objects.all().order_by('-date')  # Sort payments by date in descending order
     search_query = request.GET.get('search')
     if search_query:
-        payments = payments.filter(Q(payment_id__icontains=search_query))
+        payments = payments.filter(Q(payment_id__icontains=search_query)| Q(contract_id__tenant_name__username__icontains=search_query))
     return render(request, 'payment_list.html', {'payments': payments})
 
 @login_required
