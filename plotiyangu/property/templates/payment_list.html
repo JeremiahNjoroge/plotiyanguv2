@@ -7,7 +7,7 @@
 {% block content %}
     <h1>Payments List</h1>
     <a href="{% url 'add_payment' %}" class="add-button fas fa-plus">Add new Payment</a> <!-- Green button -->
-    <a href="{% url 'payment_arrears' %}" class="add-button">Payment Arrears</a>
+    <a href="{% url 'payment_arrears' %}" class="reddy-button">Payment Arrears</a>
     <button onclick="printTable()" class="btn btn-primary">Print Payment Statement</button>    
     <div>
         <p>Total Payments: {{ payments|length }}</p>
