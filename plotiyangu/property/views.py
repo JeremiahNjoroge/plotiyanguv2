@@ -346,6 +346,7 @@ def tenant_detail(request, tenant_id):
 @landlord_required
 def unit_list(request):
     units = Unit.objects.all()
+    properties = Property.objects.all()
 
     # Filter units based on query parameters
     status_filter = request.GET.get('status')
@@ -355,12 +356,18 @@ def unit_list(request):
         elif status_filter == 'vacant':
             units = units.filter(active=True)
 
+   # Filter units based on property name
+    property_filter = request.GET.get('property')
+    if property_filter:
+        units = units.filter(property_name__property_name=property_filter)
+
     # Search by unit ID
     search_query = request.GET.get('search')
     if search_query:
         units = units.filter(Q(unit_id__icontains=search_query) | Q(unit_type__icontains=search_query))
 
-    return render(request, 'unit_list.html', {'units': units})
+    return render(request, 'unit_list.html', {'units': units,
+                                              'properties':properties})
 
 @login_required
 @landlord_required
