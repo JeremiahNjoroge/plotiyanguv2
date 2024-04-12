@@ -19,6 +19,7 @@
 >>>>>>> development
 =======
 {"payment_id": "PBDB6F099", "amount": "15000", "date": "2024-04-04", "contract_id": "CD2A", "payment_method": "mpesa", "payment_reference_no": "QQWUQI919"}
+<<<<<<< HEAD
 {"unit_id": "U085", "tenant_name": "Myron", "maintenance_type": "Sink tap is broken"}
 {"contract_id": "C499", "action": "termination", "reason": "Leaving"}
 <<<<<<< HEAD
@@ -31,4 +32,11 @@
 >>>>>>> development
 =======
 {"unit_id": "U5EF", "tenant_name": "Kristian59", "maintenance_type": "Water leakage"}
+>>>>>>> development
+=======
+{"payment_id": "PAD544AA6", "amount": "530", "date": "2024-04-05", "contract_id": "C426", "payment_method": "mpesa", "payment_reference_no": "ADFGTTHU009"}
+{"unit_id": "UE5C", "tenant_name": "Fred", "maintenance_type": "Sink tap is broken"}
+{"contract_id": "C2A8", "action": "termination", "reason": "I plan to vacate next month"}
+{"payment_id": "P3D730090", "amount": "500", "date": "2024-04-06", "contract_id": "C2A8", "payment_method": "mpesa", "payment_reference_no": "HJIW98NSD0"}
+{"unit_id": "U6AF", "tenant_name": "Brennon", "maintenance_type": "Bulb switch"}
 >>>>>>> development
