@@ -521,7 +521,7 @@ def payment_arrears(request):
         whatsapp_message = f"Hello {contract.tenant_name},\n\n" \
                    f"This is a reminder regarding your rental payments for Contract ID: {contract.contract_id}.\n\n" \
                    f"Unit Type: *{contract.unit_id}*\n" \
-                   f"Rent Arrears: *Kes.{rent_arrears}*\n" \
+                   f"This Month's Arrears: *Kes.{rent_arrears}*\n" \
                    f"Next Month's Rent: *Kes.{rent_due_value}*\n\n" \
                    f"If you have any questions or concerns, feel free to contact me.\n\n" \
                    f"Thank you."
