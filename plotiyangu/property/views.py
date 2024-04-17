@@ -25,7 +25,6 @@ from django.utils.html import strip_tags
 def home(request):
     return render(request, 'index.html')
 
-
 @login_required
 def profile_edit(request):
     if request.method == 'POST':
@@ -661,6 +660,7 @@ def tenant_payment(request, contract_id):
                 messages.success(request, 'An error occurred while processing the payment.')
     
     return render(request, 'tenant_payment.html', {'contract': contract,'tenant':tenant})
+
 @login_required
 @tenant_required
 def generate_payment_statement(request, contract_id):

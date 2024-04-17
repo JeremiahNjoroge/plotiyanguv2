@@ -65,7 +65,6 @@ class Tenant(models.Model):
     description = models.TextField(blank=True, null=True)
     username = models.CharField(max_length=30, unique=True)
     intake_date = models.DateTimeField(auto_now_add=True)
-    last_login = models.DateTimeField(null=True, blank=True)
     profile_pic = models.ImageField(upload_to='tenant_profile_pics/', null=True, blank=True)
     active = models.BooleanField(default=True)
 
